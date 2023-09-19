@@ -131,16 +131,11 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NLq-dC-xcM">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="4a4-Ip-XxD">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="4a4-Ip-XxD">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="132"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="4a4-Ip-XxD" firstAttribute="trailing" secondItem="wQ1-e8-lTf" secondAttribute="trailing" id="BPS-uh-nks"/>
-                                    <constraint firstItem="wQ1-e8-lTf" firstAttribute="bottom" secondItem="4a4-Ip-XxD" secondAttribute="bottom" id="S1x-MX-oit"/>
-                                    <constraint firstItem="4a4-Ip-XxD" firstAttribute="top" secondItem="wQ1-e8-lTf" secondAttribute="top" id="Wnn-AD-bos"/>
-                                    <constraint firstItem="4a4-Ip-XxD" firstAttribute="leading" secondItem="wQ1-e8-lTf" secondAttribute="leading" id="dw3-eN-vKE"/>
-                                </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="zzC-P8-SOJ"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="wQ1-e8-lTf"/>
                                 <connections>
