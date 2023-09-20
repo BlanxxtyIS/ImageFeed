@@ -27,7 +27,8 @@ class ProfileViewController: UIViewController {
         let labelName = UILabel()
         labelName.text = "Екатерина Новикова"
         labelName.textColor = UIColor(named: "YP White")
-        labelName.font = UIFont(name: "SFPro-Bold", size: 23)
+        labelName.font = UIFont(name: "SFPro", size: 23)
+        labelName.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         labelName.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(labelName)
         
@@ -57,9 +58,12 @@ class ProfileViewController: UIViewController {
         labelText.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
         
         //button
-        let button = UIButton.systemButton(with: UIImage(named: "logout_button") ?? UIImage(), target: self, action: #selector(Self.didTapButton))
+        let button = UIButton.systemButton(with: UIImage(named: "Exit") ?? UIImage(), target: self, action: #selector(Self.didTapButton))
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
+        button.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        button.tintColor = UIColor.red
         button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
         button.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
     }
