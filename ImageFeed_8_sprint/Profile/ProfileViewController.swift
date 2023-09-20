@@ -63,7 +63,7 @@ class ProfileViewController: UIViewController {
         view.addSubview(button)
         button.widthAnchor.constraint(equalToConstant: 44).isActive = true
         button.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        button.tintColor = UIColor.red
+        button.tintColor = UIColor(named: "YP Red")
         button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
         button.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
     }
