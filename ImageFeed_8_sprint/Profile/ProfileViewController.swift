@@ -12,7 +12,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //image
+        //Создание_Настройка картинки и его констрейны
         let profileImage = UIImage(named: "avatar")
         let imageView = UIImageView(image: profileImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -23,7 +23,7 @@ class ProfileViewController: UIViewController {
         imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         
-        //label1
+        //Создание_Настройка Лейлбла под картинкой и его констрейнты
         let labelName = UILabel()
         labelName.text = "Екатерина Новикова"
         labelName.textColor = UIColor(named: "YP White")
@@ -35,7 +35,7 @@ class ProfileViewController: UIViewController {
         labelName.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8).isActive = true
         labelName.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
         
-        //label2
+        //Создание_Настройка лейбла, под первым лейблом и его констрейнты
         let labelLogin = UILabel()
         labelLogin.text = "@ecaterina_nov"
         labelLogin.textColor = UIColor(named: "YP Gray")
@@ -46,7 +46,7 @@ class ProfileViewController: UIViewController {
         labelLogin.topAnchor.constraint(equalTo: labelName.bottomAnchor, constant: 8).isActive = true
         labelLogin.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
         
-        //label3
+        //Создание_Настройка третего лейбла, и его констрейнты
         let labelText = UILabel()
         labelText.text = "Hello, Wold!"
         labelText.textColor = UIColor(named: "YP White")
@@ -57,7 +57,7 @@ class ProfileViewController: UIViewController {
         labelText.topAnchor.constraint(equalTo: labelLogin.bottomAnchor, constant: 8).isActive = true
         labelText.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
         
-        //button
+        //Создание_Настройка кнопки
         let button = UIButton.systemButton(with: UIImage(named: "Exit") ?? UIImage(), target: self, action: #selector(Self.didTapButton))
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
