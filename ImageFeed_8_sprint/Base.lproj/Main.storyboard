@@ -13,7 +13,7 @@
         <!--Auth View Controller-->
         <scene sceneID="8Ly-aE-l6j">
             <objects>
-                <viewController id="hzI-DE-Li5" customClass="AuthViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AuthViewController" id="hzI-DE-Li5" customClass="AuthViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="k58-DO-bhy">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -71,7 +71,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="yHp-bx-NZg">
             <objects>
-                <tabBarController id="Wpb-p4-GDj" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="Wpb-p4-GDj" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hIN-IZ-02w">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -93,7 +93,7 @@
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="ImageList" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImagesListViewController" title="ImageList" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -182,7 +182,7 @@
         <!--Single Image View Controller-->
         <scene sceneID="JJS-Za-A2r">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="5qU-xZ-z7J" customClass="SingleImageViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SingleImageViewController" modalPresentationStyle="fullScreen" id="5qU-xZ-z7J" customClass="SingleImageViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gPd-im-2vW">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -248,7 +248,7 @@
         <!--Profile View Controller-->
         <scene sceneID="wys-g2-4gZ">
             <objects>
-                <viewController id="yKm-31-VE3" customClass="ProfileViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfileViewController" id="yKm-31-VE3" customClass="ProfileViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gsp-yM-ea7">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -282,7 +282,7 @@
         <!--Web View View Controller-->
         <scene sceneID="KpV-jf-HZ0">
             <objects>
-                <viewController id="PS8-ow-95c" customClass="WebViewViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" id="PS8-ow-95c" customClass="WebViewViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kvT-cb-gTP">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -341,7 +341,7 @@
         <!--Splash View Controller-->
         <scene sceneID="li2-eB-Juw">
             <objects>
-                <viewController id="Cuz-jw-AVP" customClass="SplashViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SplashViewController" id="Cuz-jw-AVP" customClass="SplashViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yeg-x5-gcf">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
