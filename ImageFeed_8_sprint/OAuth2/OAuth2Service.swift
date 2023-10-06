@@ -8,10 +8,10 @@
 import Foundation
 
 class OAuth2Service {
-    let switchToBarController = SplashViewController()
+//    let switchToBarController = SplashViewController()
     //Bearer Token
-    private let ouauth2TokenStorage = OAuth2TokenStorage()
-    let shared = OAuth2Service()
+//    private let ouauth2TokenStorage = OAuth2TokenStorage()
+    static let shared = OAuth2Service()
     let urlSession = URLSession.shared
     var token: String? {
         get {
