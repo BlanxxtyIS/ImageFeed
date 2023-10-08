@@ -42,6 +42,7 @@ final class WebViewViewController: UIViewController {
     }
     
     @IBAction func didTapBackButton(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
     }
     
     //Обработчик обновлений, в него будем получать обновления 
@@ -54,6 +55,7 @@ final class WebViewViewController: UIViewController {
     }
     
     private func updateProgress() {
+        progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
