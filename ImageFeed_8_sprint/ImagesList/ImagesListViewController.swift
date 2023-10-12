@@ -6,8 +6,9 @@
 //
 
 import UIKit
-
+//Основной экран показа картинок
 class ImagesListViewController: UIViewController {
+    
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
@@ -53,6 +54,7 @@ extension ImagesListViewController {
         cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
+
 extension ImagesListViewController: UITableViewDelegate {
     //Отвечает за действия, которые будут выполнены при тапе по ячейке
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -90,6 +92,4 @@ extension ImagesListViewController: UITableViewDataSource {
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
-    
-    
 }

@@ -8,6 +8,7 @@
 import UIKit
 //Экран авторизации с кнопкой "Войти"
 final class AuthViewController: UIViewController {
+    
     weak var delegate: AuthViewControllerDelegate?
     
     private let webViewSegueIdentifier: String = "ShowWebView"

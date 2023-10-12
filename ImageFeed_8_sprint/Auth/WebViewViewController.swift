@@ -8,6 +8,7 @@
 import UIKit
 import WebKit
 
+
 protocol WebViewViewControllerDelegate: AnyObject {
     
     //webViewViewController - получил код
@@ -17,7 +18,7 @@ protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
 
-//Экран веб-приложения
+//Экран показа веб-страницы
 final class WebViewViewController: UIViewController {
     
     @IBOutlet weak var progressView: UIProgressView!
@@ -33,7 +34,7 @@ final class WebViewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
-        formUrl()
+        loadWebView()
     }
     
     //Отпысываемся от подписи
@@ -60,9 +61,11 @@ final class WebViewViewController: UIViewController {
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
 }
+//MARK: - Networking
+
 extension WebViewViewController {
     //Формируем запрос Request, чтобы загрузить веб-контент
-    func formUrl() {
+    func loadWebView() {
         //Инициализируем URLComponents
         var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
         //Устанавливаем значения, достаем url
@@ -76,6 +79,7 @@ extension WebViewViewController {
         //Формируем URLRequest и передаем WKWebView для загрузки
         let request = URLRequest(url: url)
         webView.load(request)
+        //теперь при открытии экрана, он загружает авторизационный экран
     }
 }
 
@@ -84,14 +88,17 @@ extension WebViewViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let code = code(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
+            //отменить навигацию
             decisionHandler(.cancel)
         } else {
+            //разрешить навигацию
             decisionHandler(.allow)
         }
     }
     
     //Получаем из navigationAction - URL, Создаем URLComponents
     //Ищем в массиве значение name == code, возвращаем value
+    //При успешной авторизации перехватываем строку "код"
     func code(from navigationAction: WKNavigationAction) -> String? {
         if let url = navigationAction.request.url,
            let urlComponents = URLComponents(string: url.absoluteString),

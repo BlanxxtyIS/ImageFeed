@@ -8,12 +8,20 @@
 import Foundation
 
 class OAuth2Service {
-//    let switchToBarController = SplashViewController()
-    //Bearer Token
-//    private let ouauth2TokenStorage = OAuth2TokenStorage()
     static let shared = OAuth2Service()
+        
+    //переменная для хранения указателя на последнюю задачу
+    private var task: URLSessionTask?
+    
+    //переменная для хранения значения code
+    private var lastCode: String?
+    
+//MARK: - PROVIDER
+    //Синглтон
     let urlSession = URLSession.shared
-    var token: String? {
+    
+    //Доступ к последнему полученному токену
+    private (set) var authToken: String? {
         get {
             return OAuth2TokenStorage().token
         }
@@ -22,38 +30,47 @@ class OAuth2Service {
         }
     }
     
-    //Получат code на вход, используя его делаем POST запрос
+    //Получат code, получаемый из WebView. Он нужен для получения токена
+    //Возвращает токен через блоку, если все успешно.
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
-            let request = authTokenRequest(code: code)
-            let task = object(for: request) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success(let body):
-                    let authToken = body.accessToken
-                    print(authToken)
-                    self.token = authToken
-                    completion(.success(authToken))
-                case .failure(let error):
-                    completion(.failure(error))
+        let request = authTokenRequest(code: code)
+        let task = object(for: request) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let body):
+                let authToken = body.accessToken
+                print(authToken)
+                self.authToken = authToken
+                completion(.success(authToken))
+            case .failure(let error):
+                completion(.failure(error))
                 }
             }
         task.resume()
-        }
+    }
 }
-//Сам загрузчик
+
+//MARK: -
+//Сетевой запрос с использованием вспомогательных функций
+//Используя вспомогательные функции, ответ от сервера можно запросить и обработать так:
 extension OAuth2Service {
-    private func object(for request: URLRequest, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
+    private func object(
+        for request: URLRequest,
+        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
     ) -> URLSessionTask {
         let decoder = JSONDecoder()
         return urlSession.data(for: request) { (result: Result<Data, Error>) in
             let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
+                Result {
+                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
+                }
             }
             completion(response)
         }
     }
     
-    func authTokenRequest(code: String) -> URLRequest {
+    //Делаем POST request
+    private func authTokenRequest(code: String) -> URLRequest {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
             + "?client_id=\(AccessKey)"
@@ -63,9 +80,9 @@ extension OAuth2Service {
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
             baseURL: URL(string: "https://unsplash.com")!)
-        
     }
     
+    //декодирование JSON объекта
     private struct OAuthTokenResponseBody: Decodable {
         let accessToken: String
         let tokenType: String
@@ -81,6 +98,8 @@ extension OAuth2Service {
     }
 }
 
+//MARK: - HTTP Request
+//Вспомогательный метод для создания запросов
 extension URLRequest {
     static func makeHTTPRequest(
         path: String,
@@ -93,6 +112,15 @@ extension URLRequest {
     }
 }
 
+//MARK: - Network Connection
+
+enum NetworkError: Error {
+    case httpStatusCode(Int)
+    case urlRequestError(Error)
+    case urlSessionError
+}
+
+//Вспомогательный метод для выполнения сетевого запроса
 extension URLSession {
     func data(for request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionTask {
         let fulfillCompletion: (Result<Data, Error>) -> Void = { result in
