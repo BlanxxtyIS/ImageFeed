@@ -11,6 +11,7 @@ class OAuth2Service {
     static let shared = OAuth2Service()
         
     //переменная для хранения указателя на последнюю задачу
+    //Если активных задач нет, то будет nil
     private var task: URLSessionTask?
     
     //переменная для хранения значения code
@@ -33,6 +34,12 @@ class OAuth2Service {
     //Получат code, получаемый из WebView. Он нужен для получения токена
     //Возвращает токен через блоку, если все успешно.
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        //Проверка что код из главного потока
+        assert(Thread.isMainThread)
+        //проверяем есть ли активная задача
+        if lastCode == code { return }
+        task?.cancel()
+        lastCode = code
         let request = authTokenRequest(code: code)
         let task = object(for: request) { [weak self] result in
             guard let self = self else { return }

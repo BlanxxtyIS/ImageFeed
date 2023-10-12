@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		F44CE62B2AD3E64F00AF7F6C /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = F44CE62A2AD3E64F00AF7F6C /* ProgressHUD */; };
+		F45CB2DB2AD8018200DA5472 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45CB2DA2AD8018200DA5472 /* UIBlockingProgressHUD.swift */; };
+		F45CB2DE2AD803F300DA5472 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45CB2DD2AD803F300DA5472 /* ProfileService.swift */; };
 		F48C02372A9F782100B83B32 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48C02362A9F782100B83B32 /* AppDelegate.swift */; };
 		F48C02392A9F782100B83B32 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48C02382A9F782100B83B32 /* SceneDelegate.swift */; };
 		F48C023B2A9F782100B83B32 /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48C023A2A9F782100B83B32 /* ImagesListViewController.swift */; };
@@ -28,6 +30,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F45CB2DA2AD8018200DA5472 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
+		F45CB2DD2AD803F300DA5472 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		F48C02332A9F782100B83B32 /* ImageFeed_8_sprint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed_8_sprint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48C02362A9F782100B83B32 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F48C02382A9F782100B83B32 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,6 +65,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F45CB2D92AD8016C00DA5472 /* window */ = {
+			isa = PBXGroup;
+			children = (
+				F45CB2DA2AD8018200DA5472 /* UIBlockingProgressHUD.swift */,
+			);
+			path = window;
+			sourceTree = "<group>";
+		};
 		F48C022A2A9F782100B83B32 = {
 			isa = PBXGroup;
 			children = (
@@ -88,6 +100,7 @@
 				F4E47E2A2AB9B21D00E77A82 /* SingleImageView */,
 				F4B216AF2ACFD73700C7A19D /* Auth */,
 				F4B216B42AD03CA700C7A19D /* OAuth2 */,
+				F45CB2D92AD8016C00DA5472 /* window */,
 				F48C023C2A9F782100B83B32 /* Main.storyboard */,
 				F48C023F2A9F782200B83B32 /* Assets.xcassets */,
 				F48C02412A9F782200B83B32 /* LaunchScreen.storyboard */,
@@ -130,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				F4E47E252AB9A27A00E77A82 /* ProfileViewController.swift */,
+				F45CB2DD2AD803F300DA5472 /* ProfileService.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -220,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4B216BA2AD0429600C7A19D /* OAuth2TokenStorage.swift in Sources */,
+				F45CB2DE2AD803F300DA5472 /* ProfileService.swift in Sources */,
 				F48C023B2A9F782100B83B32 /* ImagesListViewController.swift in Sources */,
 				F48C026B2A9FA01300B83B32 /* ImagesListCell.swift in Sources */,
 				F4E47E262AB9A27A00E77A82 /* ProfileViewController.swift in Sources */,
@@ -227,6 +242,7 @@
 				F4B216B82AD03E6000C7A19D /* OAuth2Service.swift in Sources */,
 				F4B216BC2AD0452A00C7A19D /* SplashViewController.swift in Sources */,
 				F4B216B62AD03CC400C7A19D /* OAuthTokenResponseBody.swift in Sources */,
+				F45CB2DB2AD8018200DA5472 /* UIBlockingProgressHUD.swift in Sources */,
 				F4B216B12ACFD75200C7A19D /* AuthViewController.swift in Sources */,
 				F4B216AE2ACF141700C7A19D /* Constants.swift in Sources */,
 				F4E47E282AB9A5B000E77A82 /* SingleImageViewController.swift in Sources */,
