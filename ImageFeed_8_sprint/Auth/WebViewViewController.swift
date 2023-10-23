@@ -10,10 +10,8 @@ import WebKit
 
 
 protocol WebViewViewControllerDelegate: AnyObject {
-    
     //webViewViewController - получил код
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
-    
     //пользователь нажал кнопку назад и отменил авторизацию
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
@@ -21,15 +19,17 @@ protocol WebViewViewControllerDelegate: AnyObject {
 //Экран показа веб-страницы
 final class WebViewViewController: UIViewController {
     
+    private var estigmatedProgressObservation: NSKeyValueObservation?
+    
     @IBOutlet weak var progressView: UIProgressView!
     
     @IBOutlet weak var webView: WKWebView!
     weak var delegate: WebViewViewControllerDelegate?
     
-    //Получаем обновление этого свойства, подписываемся на него
-    override func viewWillAppear(_ animated: Bool) {
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
-    }
+//    Получаем обновление этого свойства, подписываемся на него
+//    override func viewWillAppear(_ animated: Bool) {
+//        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,22 +37,25 @@ final class WebViewViewController: UIViewController {
         loadWebView()
     }
     
-    //Отпысываемся от подписи
-    override func viewDidDisappear(_ animated: Bool) {
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
+//    Отпысываемся от подписи
+//    override func viewDidDisappear(_ animated: Bool) {
+//        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
+//    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        estigmatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: {[weak self] _, _ in
+                 guard let self = self else {return}
+                 self.updateProgress()
+             })
     }
     
     @IBAction func didTapBackButton(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
-    }
-    
-    //Обработчик обновлений, в него будем получать обновления 
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
     }
     
     private func updateProgress() {
@@ -67,13 +70,13 @@ extension WebViewViewController {
     //Формируем запрос Request, чтобы загрузить веб-контент
     func loadWebView() {
         //Инициализируем URLComponents
-        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
+        var urlComponents = URLComponents(string: unsplashAuthorizeURLString)!
         //Устанавливаем значения, достаем url
         urlComponents.queryItems = [
-        URLQueryItem(name: "client_id", value: AccessKey),
-        URLQueryItem(name: "redirect_uri", value: RedirectURI),
+        URLQueryItem(name: "client_id", value: accessKey),
+        URLQueryItem(name: "redirect_uri", value: redirectURI),
         URLQueryItem(name: "response_type", value: "code"),
-        URLQueryItem(name: "scope", value: AccessScope)]
+        URLQueryItem(name: "scope", value: accessScope)]
         let url = urlComponents.url!
         
         //Формируем URLRequest и передаем WKWebView для загрузки

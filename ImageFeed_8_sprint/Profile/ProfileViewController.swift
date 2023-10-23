@@ -7,81 +7,118 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
+    
+    private let storageToken = OAuth2TokenStorage()
     private let profileService = ProfileSevice.shared
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        //Создание_Настройка картинки и его констрейны
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
+    //Создание_Настройка картинки
+    private let imageView: UIImageView = {
         let profileImage = UIImage(named: "avatar")
         let imageView = UIImageView(image: profileImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
-
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
-        imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
-
-        //Создание_Настройка Лейлбла под картинкой и его констрейнты
-        let labelName = UILabel()
-        labelName.text = "Екатерина Новикова"
-        labelName.textColor = UIColor(named: "YP White")
-        labelName.font = UIFont(name: "SFPro", size: 23)
-        labelName.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-        labelName.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(labelName)
-
-        labelName.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8).isActive = true
-        labelName.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-
-        //Создание_Настройка лейбла, под первым лейблом и его констрейнты
-        let labelLogin = UILabel()
-        labelLogin.text = "@ecaterina_nov"
-        labelLogin.textColor = UIColor(named: "YP Gray")
-        labelLogin.font = UIFont(name: "Regular", size: 13)
-        labelLogin.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(labelLogin)
-
-        labelLogin.topAnchor.constraint(equalTo: labelName.bottomAnchor, constant: 8).isActive = true
-        labelLogin.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-
-        //Создание_Настройка третего лейбла, и его констрейнты
-        let labelText = UILabel()
-        labelText.text = "Hello, Wold!"
-        labelText.textColor = UIColor(named: "YP White")
-        labelText.font = UIFont(name: "Regular", size: 13)
-        labelText.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(labelText)
-
-        labelText.topAnchor.constraint(equalTo: labelLogin.bottomAnchor, constant: 8).isActive = true
-        labelText.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-        
-        //Создание_Настройка кнопки
-        let button = UIButton.systemButton(with: UIImage(named: "Exit") ?? UIImage(), target: self, action: #selector(Self.didTapButton))
+        return imageView
+    }()
+    
+    //Создание_Настройка Лейлбла под картинкой и его констрейнты
+    private let nameLabel: UILabel = {
+        let nameLabel = UILabel()
+        nameLabel.text = "Екатерина Новикова"
+        nameLabel.textColor = UIColor(named: "YP White")
+        nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        return nameLabel
+    }()
+    
+    //Создание_Настройка лейбла, под первым лейблом и его констрейнты
+    private let usernameLabel: UILabel = {
+        let loginLabel = UILabel()
+        loginLabel.text = "@ecaterina_nov"
+        loginLabel.textColor = UIColor(named: "YP Gray")
+        loginLabel.font = UIFont(name: "Regular", size: 13)
+        loginLabel.translatesAutoresizingMaskIntoConstraints = false
+        return loginLabel
+    }()
+    
+    //Создание_Настройка третего лейбла, и его констрейнты
+    private let userDescription: UILabel = {
+        let textLabel = UILabel()
+        textLabel.text = "Hello, Wold!"
+        textLabel.textColor = UIColor(named: "YP White")
+        textLabel.font = UIFont(name: "Regular", size: 13)
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        return textLabel
+    }()
+    
+    //Создание_Настройка кнопки
+    private let button: UIButton = {
+        let button = UIButton.systemButton(with: UIImage(named: "Exit")!, target: self, action: #selector(Self.didTapButton))
         button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
-        button.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 44).isActive = true
         button.tintColor = UIColor(named: "YP Red")
-        button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
-        button.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
-    }
-    @objc private func didTapButton() {
-        for view in view.subviews {
-            if view is UILabel {
-                view.removeFromSuperview()
-            }
+        return button
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupAllViews()
+        setupAllConstaints()
+        updateProfileDetails(profile: profileService.profile)
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.DidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            guard let self = self else { return }
+            self.updateAvatar()
         }
+        updateAvatar()
+        
+    }
+    
+    @objc private func didTapButton() {
+        print("Tab Back Button")
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else {return}
+    }
+    
+    private func setupAllViews() {
+        view.addSubview(imageView)
+        view.addSubview(nameLabel)
+        view.addSubview(usernameLabel)
+        view.addSubview(userDescription)
+        view.addSubview(button)
+    }
+    private func setupAllConstaints() {
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
+            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            imageView.heightAnchor.constraint(equalToConstant: 70),
+            imageView.widthAnchor.constraint(equalToConstant: 70),
+            
+            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            nameLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            
+            usernameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            usernameLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            
+            userDescription.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8),
+            userDescription.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            
+            button.widthAnchor.constraint(equalToConstant: 44),
+            button.heightAnchor.constraint(equalToConstant: 44),
+            button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            button.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)])
     }
 }
 
-//extension ProfileViewController {
-//    private func updataProfileDetails(profile: Profile?) {
-//        guard let profile = profileService.profile else { return }
-//        nameLabel.text = profile.name
-//        usernameLabel.text = profile.loginName
-//        userDescription.text = profile.bio
-//    }
-//}
+extension ProfileViewController {
+    private func updateProfileDetails(profile: Profile?) {
+        guard let profile = profileService.profile else { return }
+        nameLabel.text = profile.name
+        usernameLabel.text = profile.loginName
+        userDescription.text = profile.bio
+    }
+}
