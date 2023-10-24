@@ -37,7 +37,7 @@ final class ProfileViewController: UIViewController {
         let loginLabel = UILabel()
         loginLabel.text = "@ecaterina_nov"
         loginLabel.textColor = UIColor(named: "YP Gray")
-        loginLabel.font = UIFont(name: "Regular", size: 13)
+        loginLabel.font = UIFont.systemFont(ofSize: 13)
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         return loginLabel
     }()
@@ -48,6 +48,7 @@ final class ProfileViewController: UIViewController {
         textLabel.text = "Hello, Wold!"
         textLabel.textColor = UIColor(named: "YP White")
         textLabel.font = UIFont(name: "Regular", size: 13)
+        textLabel.numberOfLines = 0
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         return textLabel
     }()
@@ -66,7 +67,7 @@ final class ProfileViewController: UIViewController {
         setupAllConstaints()
         updateProfileDetails(profile: profileService.profile)
         
-        profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.DidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+        profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
             guard let self = self else { return }
             self.updateAvatar()
         }

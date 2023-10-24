@@ -26,11 +26,6 @@ final class WebViewViewController: UIViewController {
     @IBOutlet weak var webView: WKWebView!
     weak var delegate: WebViewViewControllerDelegate?
     
-//    Получаем обновление этого свойства, подписываемся на него
-//    override func viewWillAppear(_ animated: Bool) {
-//        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
@@ -60,7 +55,6 @@ final class WebViewViewController: UIViewController {
     
     private func updateProgress() {
         progressView.setProgress(Float(webView.estimatedProgress), animated: true)
-//        progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
 }

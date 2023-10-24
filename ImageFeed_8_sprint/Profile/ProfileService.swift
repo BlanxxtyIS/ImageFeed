@@ -14,6 +14,11 @@ final class ProfileSevice {
     private var task: URLSessionTask?
     private (set) var profile: Profile?
     
+    private init(task: URLSessionTask? = nil, profile: Profile? = nil) {
+        self.task = task
+        self.profile = profile
+    }
+    
     private enum NetworkError: Error {
         case codeError
     }
@@ -41,7 +46,7 @@ final class ProfileSevice {
 
 extension ProfileSevice {
     private func makeRequest(token: String) -> URLRequest {
-        guard let url = URL(string: "https://unsplash.com" + "/me") else {
+        guard let url = URL(string: "https://api.unsplash.com" + "/me") else {
             fatalError("Failed to create URL")
         }
         var request = URLRequest(url: url)

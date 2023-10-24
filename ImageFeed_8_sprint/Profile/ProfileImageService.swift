@@ -9,8 +9,9 @@ import Foundation
 
 final class ProfileImageService {
     //новое имя нотификации
-    static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     static let shared = ProfileImageService()
+    private init() {}
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
     private let storageToken = OAuth2TokenStorage()
@@ -30,7 +31,7 @@ final class ProfileImageService {
                 self.avatarURL = profileImage.profileImage["small"]
                 completion(.success(self.avatarURL!))
                 NotificationCenter.default
-                    .post(name: ProfileImageService.DidChangeNotification, object: self, userInfo: ["URL": avatarURL!])
+                    .post(name: ProfileImageService.didChangeNotification, object: self, userInfo: ["URL": avatarURL!])
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -42,7 +43,7 @@ final class ProfileImageService {
 
 extension ProfileImageService {
     private func makeRequest(token: String, username: String) -> URLRequest {
-        guard let url = URL(string: "https://unsplash.com" + "/users/" + username) else {
+        guard let url = URL(string: "https://api.unsplash.com/" + "/users/" + username) else {
             fatalError("Failed to create URL")
         }
         var request = URLRequest(url: url)

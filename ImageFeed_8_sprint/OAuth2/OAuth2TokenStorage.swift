@@ -11,6 +11,7 @@ import SwiftKeychainWrapper
 //Сохраняем Bearer Token
 final class OAuth2TokenStorage {
     static let shared = OAuth2TokenStorage()
+    
     private let keychainStorage = KeychainWrapper.standard
     
     private enum Keys: String {

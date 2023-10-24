@@ -11,6 +11,7 @@ fileprivate let unsplashTokenURL = "https://unsplash.com/oauth/token"
 class OAuth2Service {
     
     static let shared = OAuth2Service()
+    
     //переменная для хранения указателя на последнюю задачу
     private var task: URLSessionTask?
     

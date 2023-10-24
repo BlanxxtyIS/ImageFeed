@@ -24,20 +24,16 @@ class SplashViewController: UIViewController {
     }()
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if oauth2TokenStorage.token != nil {
-            guard let token = oauth2TokenStorage.token else { return }
-            fetchProfile(token: token   )
-            switchToTabBarViewController()
-        } else {
-            let storyboard = UIStoryboard(name: "Main", bundle: .main)
-            guard let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {return}
-            authViewController.delegate = self
-            authViewController.modalPresentationStyle = .fullScreen
-            self.present(authViewController, animated: true)
-        }
-    }
+           super.viewDidAppear(animated)
+
+           guard UIBlockingProgressHUD.isShowing == false else { return }
+           if let token = OAuth2TokenStorage.shared.token {
+               fetchProfile(token: token)
+               switchToTabBarViewController()
+           } else {
+               showAlert(with: Error.self as! Error)
+           }
+       }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -129,4 +125,14 @@ extension SplashViewController: AuthViewControllerDelegate {
         alert.addAction(UIAlertAction(title: "OK", style: .cancel))
         self.present(alert, animated: true, completion: nil)
     }
+    
+    func showAuth() {
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        guard let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {return}
+        authViewController.delegate = self
+        authViewController.modalPresentationStyle = .fullScreen
+        self.present(authViewController, animated: true)
+    }
+    
 }
+
