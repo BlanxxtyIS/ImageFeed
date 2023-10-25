@@ -24,17 +24,15 @@ class SplashViewController: UIViewController {
     }()
     
     override func viewDidAppear(_ animated: Bool) {
-           super.viewDidAppear(animated)
+        super.viewDidAppear(animated)
 
-           guard UIBlockingProgressHUD.isShowing == false else { return }
-           if let token = OAuth2TokenStorage.shared.token {
-               fetchProfile(token: token)
-               switchToTabBarViewController()
-           } else {
-               showAlert(with: Error.self as! Error)
-           }
-       }
-    
+        if oauth2TokenStorage.token != nil {
+            let token = oauth2TokenStorage.token!
+            fetchProfile(token: token)
+        } else {
+            showAuth()
+        }
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         view.backgroundColor = UIColor(named: "YP BLACK")
@@ -89,13 +87,12 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             switch result {
             case .success(let token):
-                self.fetchProfile(token: token)
-                UIBlockingProgressHUD.dismiss()
-            case .failure(let error):
-                self.showAlert(with: error)
-                UIBlockingProgressHUD.dismiss()
+                fetchProfile(token: token)
+            case .failure:
+                showAlert(message: "Не удалост войти в систему")
                 break
             }
+            UIBlockingProgressHUD.dismiss()
         }
     }
     
@@ -104,25 +101,27 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             switch result {
             case .success:
-                guard let username = self.profileService.profile?.username else { return }
-                self.profileImageService.fetchProfileImageURL(username: username)  { _ in }
-                DispatchQueue.main.async {
-                    self.switchToTabBarViewController()
-                }
-            case .failure (let error):
-                self.showAlert(with: error)
-                break
+                guard let username = profileService.profile?.username else { return }
+                fetchProfileImage(username: username, token: token)
+                self.switchToTabBarViewController()
+            case .failure:
+                showAlert(message: "Не удалось получить данные профиля")
             }
             UIBlockingProgressHUD.dismiss()
         }
     }
     
-    private func showAlert(with error: Error) {
-        let alert = UIAlertController(
-            title: "Что-то пошло не так(",
-            message: "Не удалось войти в систему",
-            preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+    private func fetchProfileImage(username: String, token: String) {
+        profileImageService.fetchProfileImageURL(username: username, token: token) { _ in
+            UIBlockingProgressHUD.dismiss()
+        }
+    }
+    
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Что-то пошло не так", message: message, preferredStyle: UIAlertController.Style.alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+        
         self.present(alert, animated: true, completion: nil)
     }
     
