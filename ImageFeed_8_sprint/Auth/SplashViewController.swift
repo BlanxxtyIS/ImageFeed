@@ -7,6 +7,7 @@
 
 import UIKit
 import ProgressHUD
+import SwiftKeychainWrapper
 
 //Будет "Дережировать" выбором нужного нам флоу приложения в зависимости от условий
 class SplashViewController: UIViewController {
@@ -25,12 +26,12 @@ class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         if oauth2TokenStorage.token != nil {
             let token = oauth2TokenStorage.token!
             fetchProfile(token: token)
         } else {
-            showAuth()
+            showAuthViewController()
+            
         }
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +42,10 @@ class SplashViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupSplashView()
     }
     
     private func setupSplashView(){
@@ -53,18 +58,34 @@ class SplashViewController: UIViewController {
     }
     
     private func switchToTabBarViewController() {
-        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        let scenes = UIApplication.shared.connectedScenes
+        let windowScenes = scenes.first as? UIWindowScene
+        guard let window = windowScenes?.windows.first else { fatalError("Invalid Configuration") }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
+    }
+    
+    func showAuthViewController() {
+        guard let token = KeychainWrapper.standard.string(forKey: "Auth token") else {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            guard let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {return}
+            authViewController.delegate = self
+            authViewController.modalPresentationStyle = .fullScreen
+            present(authViewController, animated: true)
+            return
+        }
+        self.fetchProfile(token: token)
+        switchToTabBarViewController()
     }
 }
     
 extension SplashViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == authenticationSegueIdentifier {
-            guard let navigationController = segue.destination as? UINavigationController,
-                  let viewController = navigationController.viewControllers[0] as? AuthViewController
+            guard
+                let navigationController = segue.destination as? UINavigationController,
+                let viewController = navigationController.viewControllers[0] as? AuthViewController
             else { fatalError("Faild to prepare for \(authenticationSegueIdentifier)") }
             viewController.delegate = self
         } else {
@@ -75,9 +96,9 @@ extension SplashViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        UIBlockingProgressHUD.show()
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
+            UIBlockingProgressHUD.show()
             self.fetchOAuthToken(code)
         }
     }
@@ -124,14 +145,7 @@ extension SplashViewController: AuthViewControllerDelegate {
         
         self.present(alert, animated: true, completion: nil)
     }
-    
-    func showAuth() {
-        let storyboard = UIStoryboard(name: "Main", bundle: .main)
-        guard let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {return}
-        authViewController.delegate = self
-        authViewController.modalPresentationStyle = .fullScreen
-        self.present(authViewController, animated: true)
-    }
-    
 }
+
+
 

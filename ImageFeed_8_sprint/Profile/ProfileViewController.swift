@@ -7,12 +7,14 @@
 
 import UIKit
 import Kingfisher
+import SwiftKeychainWrapper
 
 final class ProfileViewController: UIViewController {
     
     private let storageToken = OAuth2TokenStorage()
     private let profileService = ProfileSevice.shared
     private var profileImageServiceObserver: NSObjectProtocol?
+    private let webViewViewController = WebViewViewController.shared
     
     //Создание_Настройка картинки
     private let imageView: UIImageView = {
@@ -76,7 +78,21 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapButton() {
-        print("Tab Back Button")
+        let alert = UIAlertController(title: "Выход", message: "Выйти из Вашего профиля?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.exitProfile()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Нет", style: .default))
+        self.present(alert, animated: true)
+    }
+    private func exitProfile(){
+        let removeSuccessful: Bool = KeychainWrapper.standard.removeObject(forKey: "Auth token")
+        webViewViewController.webViewClean()
+        guard let window = UIApplication.shared.windows.first else {fatalError("Invalid Configuration")}
+        window.rootViewController = SplashViewController()
+        window.makeKeyAndVisible()
     }
     
     private func updateAvatar() {

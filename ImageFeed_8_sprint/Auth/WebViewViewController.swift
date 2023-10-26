@@ -7,6 +7,7 @@
 
 import UIKit
 import WebKit
+import SwiftKeychainWrapper
 
 
 protocol WebViewViewControllerDelegate: AnyObject {
@@ -18,6 +19,8 @@ protocol WebViewViewControllerDelegate: AnyObject {
 
 //Экран показа веб-страницы
 final class WebViewViewController: UIViewController {
+    static let shared = WebViewViewController()
+    let authSevice = OAuth2Service()
     
     private var estigmatedProgressObservation: NSKeyValueObservation?
     
@@ -28,14 +31,13 @@ final class WebViewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        estigmatedProgressObservation = webView.observe(\.estimatedProgress, options: [], changeHandler: { [weak self] _ ,  _ in
+            guard let self = self else { return }
+            self.updateProgress()
+        })
         webView.navigationDelegate = self
         loadWebView()
     }
-    
-//    Отпысываемся от подписи
-//    override func viewDidDisappear(_ animated: Bool) {
-//        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
-//    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -50,12 +52,21 @@ final class WebViewViewController: UIViewController {
     }
     
     @IBAction func didTapBackButton(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
+        delegate?.webViewViewControllerDidCancel(self)
     }
     
     private func updateProgress() {
         progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    }
+    
+    func webViewClean() {
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
     }
 }
 //MARK: - Networking
@@ -84,14 +95,34 @@ extension WebViewViewController: WKNavigationDelegate {
     //Этот метот вызывается когда в рез. действий пользователя WKWebView готовится совершить навигационные действия
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let code = code(from: navigationAction) {
-            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
-            //отменить навигацию
+            authSevice.fetchOAuthToken(code) { result in
+                switch result {
+                case .success(let bearerToken):
+                    let token = bearerToken
+                    let isSuccess = KeychainWrapper.standard.set(token, forKey: "Auth token")
+                    guard isSuccess else {
+                        // ошибка
+                        return
+                    }
+                    self.delegate?.webViewViewControllerDidCancel(self)
+                    
+                    //                     self.switchToTabBarController()
+                    self.switchToSplashScreen()
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
             decisionHandler(.cancel)
         } else {
-            //разрешить навигацию
             decisionHandler(.allow)
         }
     }
+    func switchToSplashScreen() {
+        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        let splashScreenViewController = SplashViewController()
+        window.rootViewController = splashScreenViewController
+    }
+    
     
     //Получаем из navigationAction - URL, Создаем URLComponents
     //Ищем в массиве значение name == code, возвращаем value
