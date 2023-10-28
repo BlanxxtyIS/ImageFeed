@@ -30,22 +30,21 @@ class SplashViewController: UIViewController {
             let token = oauth2TokenStorage.token!
             fetchProfile(token: token)
         } else {
-            showAuthViewController()
-            
+            showAuthViewController()  
         }
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        view.backgroundColor = UIColor(named: "YP BLACK")
-        setNeedsStatusBarAppearanceUpdate()
-    }
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSplashView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.backgroundColor = UIColor(named: "YP BLACK")
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     private func setupSplashView(){
@@ -67,16 +66,12 @@ class SplashViewController: UIViewController {
     }
     
     func showAuthViewController() {
-        guard let token = KeychainWrapper.standard.string(forKey: "Auth token") else {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            guard let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {return}
-            authViewController.delegate = self
-            authViewController.modalPresentationStyle = .fullScreen
-            present(authViewController, animated: true)
-            return
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let authVC = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController {
+            authVC.delegate = self
+            authVC.modalPresentationStyle = .fullScreen
+            present(authVC, animated: true)
         }
-        self.fetchProfile(token: token)
-        switchToTabBarViewController()
     }
 }
     
