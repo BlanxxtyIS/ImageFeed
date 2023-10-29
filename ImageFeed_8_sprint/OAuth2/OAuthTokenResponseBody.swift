@@ -17,7 +17,7 @@ struct OAuthTokenResponseBody: Decodable {
     enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
         case tokenType = "token_type"
-        case scope = "public+read_user+write_likes"
+        case scope
         case createdAt = "created_at"
     }
 }
