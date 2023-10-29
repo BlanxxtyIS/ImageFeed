@@ -18,38 +18,6 @@
             endingLineNumber = "108"
             landmarkName = "fetchOAuthToken(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "0412BDCB-7F6F-42B9-B86C-067B97B3700D - a498e47679976666"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Result&lt;Swift.String, Swift.Error&gt;) -&gt; () in ImageFeed_8_sprint.SplashViewController.fetchOAuthToken(Swift.String) -&gt; ()"
-                  moduleName = "ImageFeed_8_sprint"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/marathasanov/Desktop/swift/YaPraktikum/ImageFeed_8_sprint/ImageFeed_8_sprint/Auth/SplashViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "108"
-                  endingLineNumber = "108"
-                  offsetFromSymbolStart = "112">
-               </Location>
-               <Location
-                  uuid = "0412BDCB-7F6F-42B9-B86C-067B97B3700D - a498e47679976666"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Result&lt;Swift.String, Swift.Error&gt;) -&gt; () in ImageFeed_8_sprint.SplashViewController.fetchOAuthToken(Swift.String) -&gt; ()"
-                  moduleName = "ImageFeed_8_sprint"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/marathasanov/Desktop/swift/YaPraktikum/ImageFeed_8_sprint/ImageFeed_8_sprint/Auth/SplashViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "108"
-                  endingLineNumber = "108"
-                  offsetFromSymbolStart = "304">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -64,40 +32,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "101"
             endingLineNumber = "101"
-            landmarkName = "SplashViewController"
-            landmarkType = "21">
-            <Locations>
-               <Location
-                  uuid = "309D310B-5812-4136-84C4-F7C7B13D6FA1 - e875ebe10cb749f2"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in ImageFeed_8_sprint.SplashViewController.authViewController(_: ImageFeed_8_sprint.AuthViewController, didAuthenticateWithCode: Swift.String) -&gt; ()"
-                  moduleName = "ImageFeed_8_sprint"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/marathasanov/Desktop/swift/YaPraktikum/ImageFeed_8_sprint/ImageFeed_8_sprint/Auth/SplashViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "101"
-                  endingLineNumber = "101"
-                  offsetFromSymbolStart = "84">
-               </Location>
-               <Location
-                  uuid = "309D310B-5812-4136-84C4-F7C7B13D6FA1 - f39ec992fbe89c6"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ImageFeed_8_sprint.SplashViewController.fetchOAuthToken(Swift.String) -&gt; ()"
-                  moduleName = "ImageFeed_8_sprint"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/marathasanov/Desktop/swift/YaPraktikum/ImageFeed_8_sprint/ImageFeed_8_sprint/Auth/SplashViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "102"
-                  endingLineNumber = "102"
-                  offsetFromSymbolStart = "60">
-               </Location>
-            </Locations>
+            landmarkName = "fetchOAuthToken(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

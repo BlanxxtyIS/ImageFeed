@@ -136,8 +136,9 @@ extension SplashViewController: AuthViewControllerDelegate {
     private func showAlert(message: String) {
         let alert = UIAlertController(title: "Что-то пошло не так", message: message, preferredStyle: UIAlertController.Style.alert)
         
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-        
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            self?.showAuthViewController()
+        })
         self.present(alert, animated: true, completion: nil)
     }
 }
