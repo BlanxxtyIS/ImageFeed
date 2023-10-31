@@ -9,9 +9,15 @@ import UIKit
 //Основной экран показа картинок
 class ImagesListViewController: UIViewController {
     
+    private var imageListServiceObserber: NSObjectProtocol?
+    
+    private let imageListService = ImageListService.shared
+    
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
+    
+    var photos: [Photos] = []
     
     @IBOutlet private var tableView: UITableView!
 
@@ -19,6 +25,24 @@ class ImagesListViewController: UIViewController {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         tableView.dataSource = self
+        imageListServiceObserber = NotificationCenter.default.addObserver(forName: ImageListService.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            guard let self = self else { return }
+            self.updateTableView()
+        }
+    }
+    
+    func updateTableView() {
+        let oldCount = photos.count
+        let newCount = imageListService.photos.count
+        photos = imageListService.photos
+        if oldCount != newCount {
+            tableView.performBatchUpdates {
+                let indexPath = (oldCount..<newCount).map { i in
+                    IndexPath(row: i, section: 0)
+                }
+                tableView.insertRows(at: indexPath, with: .automatic)
+            } completion: { _ in }
+        }
     }
     
     private lazy var dateFormatter: DateFormatter = {
@@ -39,6 +63,7 @@ class ImagesListViewController: UIViewController {
             super.prepare(for: segue, sender: sender)
         }
     }
+
 }
 
 extension ImagesListViewController {
@@ -74,6 +99,12 @@ extension ImagesListViewController: UITableViewDelegate {
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
     }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let photos = imageListService.photos
+        if indexPath.row + 1 == photos.count {
+            imageListService.fetchPhotosNextPage()
+        }
+    }
 }
 
 extension ImagesListViewController: UITableViewDataSource {
@@ -89,8 +120,8 @@ extension ImagesListViewController: UITableViewDataSource {
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
-        
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
+    
 }

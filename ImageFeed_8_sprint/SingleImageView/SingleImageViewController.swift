@@ -25,7 +25,6 @@ final class SingleImageViewController: UIViewController {
         scrollView.maximumZoomScale = 1.25
         imageView.image = image
         rescaleAndCenterImageInScrollView(image: image)
-        
     }
     @IBAction func didTapShareButton(_ sender: UIButton) {
         guard let image = image else { return }
@@ -36,7 +35,6 @@ final class SingleImageViewController: UIViewController {
     @IBAction func didTapBackButton(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
-        
     //Чтобы центр изображения совпадал с центром скролла
      private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
