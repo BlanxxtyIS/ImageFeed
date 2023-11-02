@@ -6,28 +6,27 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
-     var image: UIImage! {
+    var imageURL: URL! {
         didSet {
-            guard isViewLoaded else { return }
-            imageView.image = image
-            rescaleAndCenterImageInScrollView(image: image)
+            guard isViewLoaded else {return}
+            setImage()
         }
     }
-    
-    @IBOutlet private weak var scrollView: UIScrollView!
-    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var imageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
-        imageView.image = image
-        rescaleAndCenterImageInScrollView(image: image)
+        setImage()
     }
+    
     @IBAction func didTapShareButton(_ sender: UIButton) {
-        guard let image = image else { return }
+        guard let image = imageURL else { return }
         let share = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(share, animated: true)
     }
@@ -35,6 +34,21 @@ final class SingleImageViewController: UIViewController {
     @IBAction func didTapBackButton(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
+    
+    private func setImage() {
+        UIBlockingProgressHUD.show()
+        imageView.kf.setImage(with: imageURL) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                print("error")
+            }
+            UIBlockingProgressHUD.dismiss()
+        }
+    }
+    
     //Чтобы центр изображения совпадал с центром скролла
      private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale

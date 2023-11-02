@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftKeychainWrapper
 fileprivate let unsplashTokenURL = "https://unsplash.com/oauth/token"
 
 class OAuth2Service {
@@ -18,23 +19,26 @@ class OAuth2Service {
     //переменная для хранения значения code
     private var lastCode: String?
     
+    //Доступ к последнему полученному токену
+    private (set) var authToken: String {
+        get {
+            return KeychainWrapper.standard.string(forKey: "Auth token") ?? ""
+        }
+        set {
+            let isSuccess = KeychainWrapper.standard.set(newValue, forKey: "Auth token")
+            guard isSuccess else {
+                return
+            }
+        }
+    }
     
 //MARK: - PROVIDER
     //Синглтон
     let urlSession = URLSession.shared
-    
-    //Доступ к последнему полученному токену
-    private (set) var authToken: String? {
-        get {
-            return OAuth2TokenStorage().token
-        }
-        set {
-            OAuth2TokenStorage().token = newValue
-        }
-    }
+
     
     //Получат code, получаемый из WebView. Он нужен для получения токена
-    //Возвращает токен через блоку, если все успешно.
+    //Возвращает токен через блок, если все успешно.
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         //Проверка что код из главного потока
         assert(Thread.isMainThread)
