@@ -19,6 +19,12 @@ final class ProfileSevice {
         self.profile = profile
     }
     
+    func clean() {
+        profile = nil
+        task?.cancel()
+        task = nil
+    }
+    
     private enum NetworkError: Error {
         case codeError
     }

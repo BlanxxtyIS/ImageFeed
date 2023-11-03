@@ -107,14 +107,6 @@
 			path = TabBarController;
 			sourceTree = "<group>";
 		};
-		F45CB2D92AD8016C00DA5472 /* window */ = {
-			isa = PBXGroup;
-			children = (
-				F45CB2DA2AD8018200DA5472 /* UIBlockingProgressHUD.swift */,
-			);
-			path = window;
-			sourceTree = "<group>";
-		};
 		F48C022A2A9F782100B83B32 = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +130,7 @@
 			children = (
 				F48C02362A9F782100B83B32 /* AppDelegate.swift */,
 				F48C02382A9F782100B83B32 /* SceneDelegate.swift */,
+				F45CB2DA2AD8018200DA5472 /* UIBlockingProgressHUD.swift */,
 				F4B216AD2ACF141700C7A19D /* Constants.swift */,
 				F4C11E052AF003E700C82579 /* ImageList */,
 				F4E47E292AB9B21000E77A82 /* Profile */,
@@ -146,7 +139,6 @@
 				F4B216AF2ACFD73700C7A19D /* Auth */,
 				F4B216B42AD03CA700C7A19D /* OAuth2 */,
 				F43CE9CC2AE6B1CF00A64629 /* TabBarController */,
-				F45CB2D92AD8016C00DA5472 /* window */,
 				F48C023C2A9F782100B83B32 /* Main.storyboard */,
 				F48C023F2A9F782200B83B32 /* Assets.xcassets */,
 				F48C02412A9F782200B83B32 /* LaunchScreen.storyboard */,
@@ -158,8 +150,6 @@
 		F48C026C2A9FA03900B83B32 /* ImagesList */ = {
 			isa = PBXGroup;
 			children = (
-				F48C023A2A9F782100B83B32 /* ImagesListViewController.swift */,
-				F48C026A2A9FA01300B83B32 /* ImagesListCell.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -196,6 +186,8 @@
 		F4C11E052AF003E700C82579 /* ImageList */ = {
 			isa = PBXGroup;
 			children = (
+				F48C023A2A9F782100B83B32 /* ImagesListViewController.swift */,
+				F48C026A2A9FA01300B83B32 /* ImagesListCell.swift */,
 				F4C11E062AF003F400C82579 /* ImageListService.swift */,
 				F4A09D732AF0494800A409F9 /* PhotoResult.swift */,
 				F4A09D752AF11E3000A409F9 /* Photo.swift */,

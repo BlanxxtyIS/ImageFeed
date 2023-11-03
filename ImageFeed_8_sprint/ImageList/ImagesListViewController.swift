@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftKeychainWrapper
+import Kingfisher
 
 //Основной экран показа картинок
 class ImagesListViewController: UIViewController {
@@ -17,16 +18,15 @@ class ImagesListViewController: UIViewController {
     
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
-    private let photosName: [String] = Array(0..<20).map{"\($0)"}
-    
     var photos: [Photo] = []
     
     @IBOutlet private var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        tableView.dataSource = self
+//        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+//        tableView.dataSource = self
+        navigationController?.setNavigationBarHidden(true, animated: false)
         imageListServiceObserber = NotificationCenter.default
             .addObserver(
                 forName: ImageListService.didChangeNotification,
@@ -50,6 +50,11 @@ class ImagesListViewController: UIViewController {
                 tableView.insertRows(at: indexPath, with: .automatic)
             } completion: { _ in }
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: ImageListService.didChangeNotification, object: nil)
     }
     
     private lazy var dateFormatter: DateFormatter = {
@@ -76,7 +81,7 @@ extension ImagesListViewController {
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let imageUrl = photos[indexPath.row].thumbImageURL
         let url = URL(string: imageUrl)
-        let placeholder = UIImage(named: "LoaderImages")
+        let placeholder = UIImage(named: "Stubs")
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(with: url, placeholder: placeholder){[weak self] _ in
             guard let self = self else { return }
@@ -92,6 +97,12 @@ extension ImagesListViewController {
         let like = isLiked ? UIImage(named: "dislike") : UIImage(named: "like")
         cell.likeButton.setImage(like, for: .normal)
         cell.selectionStyle = .none
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row + 1 == imageListService.photos.count {
+            imageListService.fetchPhotosNextPage()
+        }
     }
 }
 
@@ -148,6 +159,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             }
         }
     }
+
     
     private func errorLikeAlert(with error: Error) {
         let alert = UIAlertController(

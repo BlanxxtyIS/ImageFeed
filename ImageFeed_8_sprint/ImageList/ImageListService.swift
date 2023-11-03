@@ -59,6 +59,13 @@ class ImageListService: UIViewController {
         self.task = task
         task.resume()
     }
+    
+    func clean(){
+        photos = []
+        lastsLoadedPage = nil
+        task?.cancel()
+        task = nil
+    }
 }
 
 extension ImageListService {
@@ -99,7 +106,7 @@ extension ImageListService {
             self.task = nil
             switch result {
             case .success(let photoResult):
-                let toPutLike = photoResult.photo?.likedByUser ?? false
+                let isLiked = photoResult.photo?.likedByUser ?? false
                 if let index = self.photos.firstIndex(where: {$0.id == photoResult.photo?.id}) {
                     let photo = self.photos[index]
                     let newPhoto = Photo(id: photo.id,
