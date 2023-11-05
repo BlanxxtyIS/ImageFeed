@@ -8,6 +8,7 @@
 import UIKit
 import Kingfisher
 import SwiftKeychainWrapper
+import WebKit
 
 final class ProfileViewController: UIViewController {
     
@@ -75,6 +76,7 @@ final class ProfileViewController: UIViewController {
             guard let self = self else { return }
             self.updateAvatar()
         }
+        view.backgroundColor = UIColor(named: "YP BLACK")
         updateAvatar()
         
     }
@@ -89,21 +91,42 @@ final class ProfileViewController: UIViewController {
             message: "Выйти из Вашего профиля?",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { [weak self] action in
+        alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
             self.logout()
         }))
         alert.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
+    
+    private func cleanTokenDataAndResetToAuth() {
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(
+            ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()
+        ) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(
+                    ofTypes: record.dataTypes,
+                    for: [record],
+                    completionHandler: {}
+                )
+            }
+        }
+        OAuth2TokenStorage.deleteToken()
+        guard let window = UIApplication.shared.windows.first else {fatalError("окно не обноружено")}
+        window.rootViewController = SplashViewController()
+        window.makeKeyAndVisible()
+    }
+    
     private func logout() {
-        OAuth2TokenStorage.clean()
+        let logoutAccount: Bool = KeychainWrapper.standard.removeObject(forKey: "Auth token")
         WebViewViewController.clean()
         cleanServicesData()
         tabBarController?.dismiss(animated: true)
         guard let window = UIApplication.shared.windows.first else {
             fatalError("Invalid Configuration") }
         window.rootViewController = SplashViewController()
+        window.makeKeyAndVisible()
     }
     
     private func cleanServicesData() {

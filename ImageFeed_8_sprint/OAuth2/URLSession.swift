@@ -16,12 +16,13 @@ extension URLSession {
         let task = dataTask(with: request) {data, response, error in
             DispatchQueue.main.async {
                 if let error = error {
-                    complition(.failure(error))
+                    complition(.failure(error))                    
                     return
                 }
                 if let response = response as? HTTPURLResponse,
                    !(200...299).contains(response.statusCode){
                     complition(.failure(NetworkError.codeError))
+                    print(response.statusCode)
                     return
                 }
                 if let data = data{

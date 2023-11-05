@@ -4,13 +4,10 @@
 //
 //  Created by Марат Хасанов on 30.10.2023.
 //
-
-import Foundation
 import UIKit
-import SwiftKeychainWrapper
 
 //алгоритм для постраничной загрузки из сети
-class ImageListService: UIViewController {
+final class ImageListService: UIViewController {
     
     static let shared = ImageListService()  //Синглтон
     
@@ -115,7 +112,7 @@ extension ImageListService {
                                          welcomeDescription: photo.welcomeDescription,
                                          thumbImageURL: photo.thumbImageURL,
                                          largeImageURL: photo.largeImageURL,
-                                         isLiked: photo.isLiked)
+                                         isLiked: isLiked)
                     self.photos = self.photos.replacement(itemAt: index, newValue: newPhoto)
                 }
                 completion(.success(()))
@@ -142,16 +139,3 @@ extension ImageListService {
         return request
     }
 }
-
-extension Array {
-    func replacement(itemAt: Int, newValue: Photo) -> [Photo] {
-        var photos = ImageListService.shared.photos
-        photos.replaceSubrange(itemAt...itemAt, with: [newValue])
-        return photos
-    }
-}
-
-
-
-
-

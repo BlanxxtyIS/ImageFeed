@@ -6,11 +6,10 @@
 //
 
 import UIKit
-import SwiftKeychainWrapper
 import Kingfisher
 
 //Основной экран показа картинок
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     
     private var imageListServiceObserber: NSObjectProtocol?
     
@@ -24,8 +23,6 @@ class ImagesListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-//        tableView.dataSource = self
         navigationController?.setNavigationBarHidden(true, animated: false)
         imageListServiceObserber = NotificationCenter.default
             .addObserver(
@@ -68,9 +65,8 @@ class ImagesListViewController: UIViewController {
         if segue.identifier == showSingleImageSegueIdentifier {
             let viewController = segue.destination as! SingleImageViewController
             let indexPath = sender as! IndexPath
-            let photo = photos[indexPath.row]
-            guard let imageURL = URL(string: photo.largeImageURL) else { return }
-            viewController.imageURL = imageURL
+            let image = URL(string: photos[indexPath.row].largeImageURL)
+            viewController.image = image
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -141,6 +137,7 @@ extension ImagesListViewController: UITableViewDataSource {
 }
 
 extension ImagesListViewController: ImagesListCellDelegate {
+    
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let photo = photos[indexPath.row]

@@ -9,12 +9,13 @@ import UIKit
 import Kingfisher
 
 final class SingleImageViewController: UIViewController {
-    var imageURL: URL! {
+    var image: URL! {
         didSet {
             guard isViewLoaded else {return}
             setImage()
         }
     }
+
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageView: UIImageView!
 
@@ -26,7 +27,7 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBAction func didTapShareButton(_ sender: UIButton) {
-        guard let image = imageURL else { return }
+        guard let image = image else { return }
         let share = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(share, animated: true)
     }
@@ -37,7 +38,7 @@ final class SingleImageViewController: UIViewController {
     
     private func setImage() {
         UIBlockingProgressHUD.show()
-        imageView.kf.setImage(with: imageURL) { [weak self] result in
+        imageView.kf.setImage(with: image) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let imageResult):

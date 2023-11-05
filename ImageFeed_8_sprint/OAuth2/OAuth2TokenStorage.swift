@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftKeychainWrapper
-import WebKit
+
 
 //Сохраняем Bearer Token
 final class OAuth2TokenStorage {
@@ -19,7 +19,7 @@ final class OAuth2TokenStorage {
         case token
     }
     
-    private let tokenKey = "BearerToken"
+    private let tokenKey = "Auth token"
     
     var token: String? {
         get{
@@ -34,12 +34,8 @@ final class OAuth2TokenStorage {
         }
     }
     
-    static func clean() {
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-            }
-        }
-    }
+    static func deleteToken() {
+         KeychainWrapper.standard.removeObject(forKey: shared.tokenKey)
+     }
+    
 }

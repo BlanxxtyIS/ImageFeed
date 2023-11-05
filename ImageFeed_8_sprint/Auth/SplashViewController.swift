@@ -66,15 +66,6 @@ class SplashViewController: UIViewController {
         let tabBarController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
     }
-    
-//    func showAuthViewController() {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        if let authVC = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController {
-//            authVC.delegate = self
-//            authVC.modalPresentationStyle = .fullScreen
-//            present(authVC, animated: true)
-//        }
-//    }
 }
     
 extension SplashViewController {
@@ -127,31 +118,13 @@ extension SplashViewController: AuthViewControllerDelegate {
                 }
             case .failure(let error):
                 self.showAlert(with: error)
+                print(error)
                 break
             }
             UIBlockingProgressHUD.dismiss()
         }
     }
-    
-//    private func fetchProfileImage(token: String) {
-//        profileService.fetchProfile(token) { [weak self] result in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success:
-//                guard let username = self.profileService.profile?.username else {
-//                    return }
-//                self.profileImageService.fetchProfileImageURL(username: username) { _ in
-//                }
-//                DispatchQueue.main.async {
-//                    self.switchToTabBarViewController()
-//                }
-//            case .failure(let error):
-//                self.showAlert(with: error)
-//                break
-//            }
-//            UIBlockingProgressHUD.dismiss()
-//        }
-//    }
+
     
     private func showAlert(with error: Error) {
         let alert = UIAlertController(

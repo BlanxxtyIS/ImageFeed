@@ -21,7 +21,7 @@ final class ProfileImageService {
         //Проверка что код из главного потока
         assert(Thread.isMainThread)
     
-        let request = makeRequest(token: storageToken.token!, username: avatarURL ?? "")
+        let request = makeRequest(token: storageToken.token!, username: username)
         let session = URLSession.shared
         let task = session.objectTask(for: request) {[weak self] (result: Result<UserResult, Error>) in
             guard let self = self else { return }

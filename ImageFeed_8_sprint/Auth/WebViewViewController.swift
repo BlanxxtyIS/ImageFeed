@@ -56,18 +56,20 @@ final class WebViewViewController: UIViewController {
     }
     
     private func updateProgress() {
-        progressView.setProgress(Float(webView.estimatedProgress), animated: true)
+        progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
     
-    func webViewClean() {
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-            }
-        }
-    }
+//    func webViewClean() {
+//        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+//        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+//            records.forEach { record in
+//                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+//            }
+//            
+//        }
+//        
+//    }
 }
 //MARK: - Networking
 
@@ -104,23 +106,7 @@ extension WebViewViewController: WKNavigationDelegate {
     //Этот метот вызывается когда в рез. действий пользователя WKWebView готовится совершить навигационные действия
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let code = code(from: navigationAction) {
-            authSevice.fetchOAuthToken(code) { result in
-                switch result {
-                case .success(let bearerToken):
-                    let token = bearerToken
-                    let isSuccess = KeychainWrapper.standard.set(token, forKey: "Auth token")
-                    guard isSuccess else {
-                        // ошибка
-                        return
-                    }
-                    self.delegate?.webViewViewControllerDidCancel(self)
-                    
-                    //                     self.switchToTabBarController()
-                    self.switchToSplashScreen()
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
+            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
