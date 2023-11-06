@@ -8,6 +8,7 @@
 import UIKit
 import Kingfisher
 import SwiftKeychainWrapper
+import WebKit
 
 final class ProfileViewController: UIViewController {
     
@@ -57,7 +58,9 @@ final class ProfileViewController: UIViewController {
     
     //Создание_Настройка кнопки
     private let button: UIButton = {
-        let button = UIButton.systemButton(with: UIImage(named: "Exit")!, target: self, action: #selector(Self.didTapButton))
+        let button = UIButton.systemButton(with: UIImage(named: "Exit")!,
+                                           target: self,
+                                           action: #selector(Self.didTapButton))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = UIColor(named: "YP Red")
         return button
@@ -73,27 +76,46 @@ final class ProfileViewController: UIViewController {
             guard let self = self else { return }
             self.updateAvatar()
         }
+        view.backgroundColor = UIColor(named: "YP BLACK")
         updateAvatar()
         
     }
     
     @objc private func didTapButton() {
-        let alert = UIAlertController(title: "Выход", message: "Выйти из Вашего профиля?", preferredStyle: .alert)
+        showLogoutAlert()
+    }
+    
+    private func showLogoutAlert() {
+        let alert = UIAlertController(
+            title: "Выход",
+            message: "Выйти из Вашего профиля?",
+            preferredStyle: .alert
+        )
         alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
-            self.exitProfile()
+            self.logout()
         }))
-        
-        alert.addAction(UIAlertAction(title: "Нет", style: .default))
-        self.present(alert, animated: true)
+        alert.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
-    private func exitProfile(){
-        let removeSuccessful: Bool = KeychainWrapper.standard.removeObject(forKey: "Auth token")
-        webViewViewController.webViewClean()
-        guard let window = UIApplication.shared.windows.first else {fatalError("Invalid Configuration")}
+    
+    private func logout() {
+        let logoutAccount: Bool = KeychainWrapper.standard.removeObject(forKey: "Auth token")
+        WebViewViewController.clean()
+        cleanServicesData()
+        tabBarController?.dismiss(animated: true)
+        guard let window = UIApplication.shared.windows.first else {
+            fatalError("Invalid Configuration") }
         window.rootViewController = SplashViewController()
         window.makeKeyAndVisible()
     }
+    
+    private func cleanServicesData() {
+        ImageListService.shared.clean()
+        ProfileSevice.shared.clean()
+        ProfileImageService.shared.clean()
+    }
+    
     
     private func updateAvatar() {
         guard

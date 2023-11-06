@@ -17,11 +17,11 @@ final class ProfileImageService {
     private let storageToken = OAuth2TokenStorage()
     private (set) var avatarURL: String?
     
-    func fetchProfileImageURL(username: String,token: String, _ completion: @escaping (Result<String, Error>) -> Void) {
+    func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         //Проверка что код из главного потока
         assert(Thread.isMainThread)
     
-        let request = makeRequest(token: storageToken.token!, username: avatarURL ?? "")
+        let request = makeRequest(token: storageToken.token!, username: username)
         let session = URLSession.shared
         let task = session.objectTask(for: request) {[weak self] (result: Result<UserResult, Error>) in
             guard let self = self else { return }
@@ -38,6 +38,12 @@ final class ProfileImageService {
         }
         self.task = task
         task.resume()
+    }
+    
+    func clean() {
+        avatarURL = nil
+        task?.cancel()
+        task = nil
     }
 }
 

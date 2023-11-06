@@ -18,23 +18,23 @@ class OAuth2Service {
     //переменная для хранения значения code
     private var lastCode: String?
     
+    //Доступ к последнему полученному токену
+    private (set) var authToken: String {
+        get {
+            OAuth2TokenStorage.shared.token ?? ""
+        }
+        set {
+            OAuth2TokenStorage.shared.token = newValue
+        }
+    }
     
 //MARK: - PROVIDER
     //Синглтон
     let urlSession = URLSession.shared
-    
-    //Доступ к последнему полученному токену
-    private (set) var authToken: String? {
-        get {
-            return OAuth2TokenStorage().token
-        }
-        set {
-            OAuth2TokenStorage().token = newValue
-        }
-    }
+
     
     //Получат code, получаемый из WebView. Он нужен для получения токена
-    //Возвращает токен через блоку, если все успешно.
+    //Возвращает токен через блок, если все успешно.
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         //Проверка что код из главного потока
         assert(Thread.isMainThread)
@@ -55,6 +55,7 @@ class OAuth2Service {
                 completion(.success(authToken))
             case .failure(let error):
                 completion(.failure(error))
+                print(error)
                 }
             }
         self.task = task

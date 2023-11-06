@@ -60,6 +60,9 @@
                                                     <rect key="frame" x="333" y="4" width="44" height="44"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="like"/>
+                                                    <connections>
+                                                        <action selector="likeButtonClicked" destination="W64-Ko-w5k" eventType="touchUpInside" id="MM1-g4-es3"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30 августа 2023" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="vwa-Bu-rme">
                                                     <rect key="frame" x="24.000000000000007" y="154" width="96.666666666666686" height="16"/>
@@ -125,14 +128,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NLq-dC-xcM">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NLq-dC-xcM">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="4a4-Ip-XxD">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="4a4-Ip-XxD">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="132"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="4a4-Ip-XxD" secondAttribute="trailing" id="5N8-Vw-11z"/>
+                                    <constraint firstItem="4a4-Ip-XxD" firstAttribute="top" secondItem="NLq-dC-xcM" secondAttribute="top" id="LgF-yh-WyA"/>
+                                    <constraint firstAttribute="bottom" secondItem="4a4-Ip-XxD" secondAttribute="bottom" id="O06-3b-Sji"/>
+                                    <constraint firstItem="4a4-Ip-XxD" firstAttribute="leading" secondItem="NLq-dC-xcM" secondAttribute="leading" id="xVU-GY-FVG"/>
+                                </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="zzC-P8-SOJ"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="wQ1-e8-lTf"/>
                                 <connections>

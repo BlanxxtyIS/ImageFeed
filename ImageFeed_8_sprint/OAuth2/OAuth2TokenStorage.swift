@@ -8,6 +8,7 @@
 import Foundation
 import SwiftKeychainWrapper
 
+
 //Сохраняем Bearer Token
 final class OAuth2TokenStorage {
     static let shared = OAuth2TokenStorage()
@@ -18,7 +19,7 @@ final class OAuth2TokenStorage {
         case token
     }
     
-    private let tokenKey = "BearerToken"
+    private let tokenKey = "Auth token"
     
     var token: String? {
         get{
@@ -32,4 +33,9 @@ final class OAuth2TokenStorage {
             }
         }
     }
+    
+    static func deleteToken() {
+         KeychainWrapper.standard.removeObject(forKey: shared.tokenKey)
+     }
+    
 }
