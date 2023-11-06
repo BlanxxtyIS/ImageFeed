@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftKeychainWrapper
 fileprivate let unsplashTokenURL = "https://unsplash.com/oauth/token"
 
 class OAuth2Service {
@@ -22,13 +21,10 @@ class OAuth2Service {
     //Доступ к последнему полученному токену
     private (set) var authToken: String {
         get {
-            return KeychainWrapper.standard.string(forKey: "Auth token") ?? ""
+            OAuth2TokenStorage.shared.token ?? ""
         }
         set {
-            let isSuccess = KeychainWrapper.standard.set(newValue, forKey: "Auth token")
-            guard isSuccess else {
-                return
-            }
+            OAuth2TokenStorage.shared.token = newValue
         }
     }
     
