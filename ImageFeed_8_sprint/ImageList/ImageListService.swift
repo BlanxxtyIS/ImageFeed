@@ -9,6 +9,8 @@ import UIKit
 //алгоритм для постраничной загрузки из сети
 final class ImageListService: UIViewController {
     
+    let authHelper = AuthConfiguration.standard
+    
     static let shared = ImageListService()  //Синглтон
     
     private (set) var photos: [Photo] = []  //скаченные фото
@@ -71,7 +73,7 @@ extension ImageListService {
         var request = URLRequest.makeHTTPRequest(
             path: "/photos?page=\(page)&&per_page=\(perPage)",
             httpMethod: "GET",
-            baseURL: defaultApiBaseURL)
+            baseURL: authHelper.defaultApiBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
@@ -82,12 +84,12 @@ extension ImageListService {
             size: CGSize(width: photoResult.width, height: photoResult.height),
             createdAt: self.dateFormatter.date(from: photoResult.createdAt ?? ""),
             welcomeDescription: photoResult.description,
-            thumbImageURL: photoResult.urls.thumbImageURL ?? "",
-            largeImageURL: photoResult.urls.largeImageURL ?? "",
+            thumbImageURL: URL(string: self.small)!,
+            largeImageURL: URL(string: self.urls.full)!,
             isLiked: photoResult.likedByUser)
     }
     
-    func like(id: String, isLike: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+    func like(id: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         assert(Thread.isMainThread)
         task?.cancel()
         
@@ -127,14 +129,14 @@ extension ImageListService {
     func toPutLike(_ token: String, id: String) -> URLRequest? {
         var request = URLRequest.makeHTTPRequest(path: "photos/\(id)/like",
                                                  httpMethod: "POST",
-                                                 baseURL: defaultApiBaseURL)
+                                                 baseURL: authHelper.defaultApiBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
     func removeLike(_ token: String, id: String) -> URLRequest? {
         var request = URLRequest.makeHTTPRequest(path: "photos/\(id)/like",
                                                        httpMethod: "DELETE",
-                                                       baseURL: defaultApiBaseURL)
+                                                 baseURL: authHelper.defaultBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

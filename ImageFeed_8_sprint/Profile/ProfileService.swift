@@ -38,7 +38,7 @@ final class ProfileSevice {
         let task = session.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
             switch result {
             case .success(let body):
-                let profile = Profile(decodedData: body)
+                let profile = Profile(from: body)
                 self?.profile = profile
                 completion(.success(profile))
             case .failure(let error):
@@ -77,16 +77,16 @@ struct ProfileResult: Codable {
 }
 
 //для UI-кода
-struct Profile: Codable {
+struct Profile {
     let username: String
     let name: String
     let loginName: String
-    let bio: String?
+    var bio: String
     
-    init(decodedData: ProfileResult) {
-        self.username = decodedData.username
-        self.name = (decodedData.firstName ) + " " + (decodedData.lastName )
-        self.loginName = "@" + (decodedData.username)
-        self.bio = decodedData.bio
+    init(from body: ProfileResult) {
+        self.username = body.username
+        self.name = "\(body.firstName) \(body.lastName)"
+        self.loginName = "@\(body.username)"
+        self.bio = body.bio ?? ""
     }
 }

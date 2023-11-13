@@ -112,7 +112,7 @@
                     <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="6JZ-zO-BIj"/>
                     <navigationItem key="navigationItem" id="0Ui-ax-Zj0"/>
                     <connections>
-                        <outlet property="tableView" destination="Qhf-CL-ERS" id="NXZ-qj-Cag"/>
+                        <outlet property="tableView" destination="Qhf-CL-ERS" id="42p-CL-UYm"/>
                         <segue destination="5qU-xZ-z7J" kind="presentation" identifier="ShowSingleImage" modalPresentationStyle="fullScreen" id="twb-W1-PTc"/>
                     </connections>
                 </viewController>
@@ -235,6 +235,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ayz-hY-ccV"/>
+                    <connections>
+                        <outlet property="authButton" destination="YOd-bK-Adv" id="pGG-4g-E3y"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dV3-Ru-soU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

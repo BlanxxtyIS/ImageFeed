@@ -8,6 +8,14 @@
 import UIKit
 import Kingfisher
 
+protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListViewPresenterProtocol? {get set}
+    var tableView: UITableView! {get set}
+    func setupTableView()
+    func errorLikeAlert(error: Error)
+}
+
+
 //Основной экран показа картинок
 final class ImagesListViewController: UIViewController {
     
@@ -19,7 +27,9 @@ final class ImagesListViewController: UIViewController {
     
     var photos: [Photo] = []
     
-    @IBOutlet private var tableView: UITableView!
+    @IBOutlet public var tableView: UITableView!
+    
+    var presenter = ImagesListViewPresenter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +43,7 @@ final class ImagesListViewController: UIViewController {
                     self.updateTableView()
                 }
         imageListService.fetchPhotosNextPage()
+        presenter.viewDidLoad()
     }
     
     func updateTableView() {
@@ -65,7 +76,7 @@ final class ImagesListViewController: UIViewController {
         if segue.identifier == showSingleImageSegueIdentifier {
             let viewController = segue.destination as! SingleImageViewController
             let indexPath = sender as! IndexPath
-            let image = URL(string: photos[indexPath.row].largeImageURL)
+            let image = presenter.returnPhoto(indexPath: indexPath).largeImageURL
             viewController.image = image
         } else {
             super.prepare(for: segue, sender: sender)
@@ -76,7 +87,7 @@ final class ImagesListViewController: UIViewController {
 extension ImagesListViewController {
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let imageUrl = photos[indexPath.row].thumbImageURL
-        let url = URL(string: imageUrl)
+        let url = imageUrl
         let placeholder = UIImage(named: "Stubs")
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(with: url, placeholder: placeholder){[weak self] _ in
@@ -156,7 +167,6 @@ extension ImagesListViewController: ImagesListCellDelegate {
             }
         }
     }
-
     
     private func errorLikeAlert(with error: Error) {
         let alert = UIAlertController(
@@ -167,13 +177,3 @@ extension ImagesListViewController: ImagesListCellDelegate {
         self.present(alert, animated: true, completion: nil)
     }
 }
-    
-
-/* Механизм переиспользования
- 
- Таблица запрашивает общее кол-во элементов
- Таблица запрашивает примерную высоут всех ячеек и определяет примерный contentSize
- Исходя из contentSize и Bounds определяются индексы которые должны быть отрисованы
- Ячейки получаются методом dequeueResusableCell
- Перед отображением ячеек выставляется их финальная высота tableView(..heightForRowAt)
- */

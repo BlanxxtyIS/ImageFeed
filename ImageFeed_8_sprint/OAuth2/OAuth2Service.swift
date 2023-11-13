@@ -10,6 +10,8 @@ fileprivate let unsplashTokenURL = "https://unsplash.com/oauth/token"
 
 class OAuth2Service {
     
+    let authHelper = AuthConfiguration.standard
+    
     static let shared = OAuth2Service()
     
     //переменная для хранения указателя на последнюю задачу
@@ -71,9 +73,9 @@ extension OAuth2Service {
     private func authTokenRequest(code: String) -> URLRequest {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
-            + "?client_id=\(accessKey)"
-            + "&&client_secret=\(secretKey)"
-            + "&&redirect_uri=\(redirectURI)"
+            + "?client_id=\(authHelper.accessKey)"
+            + "&&client_secret=\(authHelper.secretKey)"
+            + "&&redirect_uri=\(authHelper.redirectURI)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
@@ -86,7 +88,7 @@ extension URLRequest {
     static func makeHTTPRequest(
         path: String,
         httpMethod: String,
-        baseURL: URL = defaultBaseURL
+        baseURL: URL = AuthConfiguration.standard.defaultApiBaseURL
     ) -> URLRequest {
         var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
         request.httpMethod = httpMethod

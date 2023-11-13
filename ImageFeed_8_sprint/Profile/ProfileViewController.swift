@@ -10,12 +10,19 @@ import Kingfisher
 import SwiftKeychainWrapper
 import WebKit
 
+protocol ProfileViewControllerPrototcol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func updateAvatar(url: URL)
+    func updateProfile(profile: Profile)
+}
+
 final class ProfileViewController: UIViewController {
     
     private let storageToken = OAuth2TokenStorage()
     private let profileService = ProfileSevice.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     private let webViewViewController = WebViewViewController.shared
+    var presenter: ProfilePresenterProtocol?
     
     //Создание_Настройка картинки
     private let imageView: UIImageView = {
@@ -71,6 +78,7 @@ final class ProfileViewController: UIViewController {
         setupAllViews()
         setupAllConstaints()
         updateProfileDetails(profile: profileService.profile)
+        presenter?.viewDidLoad()
         
         profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
             guard let self = self else { return }
