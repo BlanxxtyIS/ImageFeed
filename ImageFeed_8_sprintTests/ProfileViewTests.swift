@@ -9,7 +9,7 @@ import XCTest
 @testable import ImageFeed_8_sprint
 
     
-final class ProfileViewControllerSpy: ProfileViewControllerPrototcol {
+final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
     var presenter: ImageFeed_8_sprint.ProfilePresenterProtocol?
     
     var viewDidUpdateAvatar = false
@@ -33,7 +33,7 @@ final class ProfileViewControllerSpy: ProfileViewControllerPrototcol {
     }
 }
 final class ProfilePresenterSpy: ProfilePresenterProtocol {
-    var view: ImageFeed_8_sprint.ProfileViewControllerPrototcol?
+    var view: ImageFeed_8_sprint.ProfileViewControllerProtocol?
     
     var viewDidLoadCalled = false
     var cleanTokenDataAndResetToAuthCalled = false
@@ -59,7 +59,7 @@ final class ProfilePresenterTests: XCTestCase {
     
     override func setUpWithError() throws {
         viewController.presenter = presenter
-        //presenter.view = viewController
+        presenter.view = viewController as? any ProfileViewControllerProtocol
     }
     
     func testViewControllerCallViewDidLoad() {

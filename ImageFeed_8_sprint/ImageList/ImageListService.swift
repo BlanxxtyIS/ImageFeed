@@ -22,7 +22,7 @@ final class ImageListService: UIViewController {
     private let oAuth2StorageToken = OAuth2TokenStorage.shared
     
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange") //Нотификация
-    
+
     var task: URLSessionTask?
     
     private let urlSession = URLSession.shared
@@ -84,8 +84,8 @@ extension ImageListService {
             size: CGSize(width: photoResult.width, height: photoResult.height),
             createdAt: self.dateFormatter.date(from: photoResult.createdAt ?? ""),
             welcomeDescription: photoResult.description,
-            thumbImageURL: URL(string: self.small)!,
-            largeImageURL: URL(string: self.urls.full)!,
+            thumbImageURL: URL(string: photoResult.urls.small)!,
+            largeImageURL: URL(string: photoResult.urls.full)!,
             isLiked: photoResult.likedByUser)
     }
     

@@ -9,7 +9,7 @@ import Foundation
 import WebKit
 
 protocol ProfilePresenterProtocol {
-    var view: ProfileViewControllerPrototcol? {get set}
+    var view: ProfileViewControllerProtocol? {get set}
     func viewDidLoad()
     func cleanTokenDataAndResetToAuth()
     func getProfileImage()
@@ -19,7 +19,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     private var profileImageService = ProfileImageService.shared
     private var profileService = ProfileSevice.shared
     
-    weak var view: ProfileViewControllerPrototcol?
+    weak var view: ProfileViewControllerProtocol?
     
     func viewDidLoad() {
         getProfileImage()

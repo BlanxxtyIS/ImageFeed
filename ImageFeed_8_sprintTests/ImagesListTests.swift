@@ -78,8 +78,8 @@ final class ImagesListViewTests: XCTestCase {
     let indexPath = IndexPath(row: 1, section: 0)
     
     override func setUpWithError() throws {
-      //viewController.presenter = presenter
-      //presenter.view = viewController
+        viewController.presenter = presenter
+        presenter.view = viewController as? any ImagesListViewControllerProtocol
     }
     
     func testViewDidLoadCalled() {

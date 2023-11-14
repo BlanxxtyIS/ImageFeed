@@ -29,10 +29,13 @@ final class ImagesListViewController: UIViewController {
     
     @IBOutlet public var tableView: UITableView!
     
-    var presenter = ImagesListViewPresenter()
+    var presenter = ImagesListViewPresenter() as ImagesListViewPresenterProtocol
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageListService.fetchPhotosNextPage()
+        presenter.viewDidLoad()
+        
         navigationController?.setNavigationBarHidden(true, animated: false)
         imageListServiceObserber = NotificationCenter.default
             .addObserver(
@@ -42,8 +45,6 @@ final class ImagesListViewController: UIViewController {
                     guard let self = self else { return }
                     self.updateTableView()
                 }
-        imageListService.fetchPhotosNextPage()
-        presenter.viewDidLoad()
     }
     
     func updateTableView() {
@@ -131,7 +132,7 @@ extension ImagesListViewController: UITableViewDelegate {
 extension ImagesListViewController: UITableViewDataSource {
     //сколько ячеек будет в конкретной секции
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        photos.count
+        presenter.photosCount
     }
     
     //созд. ячейку и наполняем ее данными - передаем таблице

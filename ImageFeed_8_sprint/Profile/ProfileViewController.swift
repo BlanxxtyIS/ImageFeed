@@ -10,7 +10,7 @@ import Kingfisher
 import SwiftKeychainWrapper
 import WebKit
 
-protocol ProfileViewControllerPrototcol: AnyObject {
+protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfilePresenterProtocol? { get set }
     func updateAvatar(url: URL)
     func updateProfile(profile: Profile)
@@ -18,6 +18,7 @@ protocol ProfileViewControllerPrototcol: AnyObject {
 
 final class ProfileViewController: UIViewController {
     
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private let storageToken = OAuth2TokenStorage()
     private let profileService = ProfileSevice.shared
     private var profileImageServiceObserver: NSObjectProtocol?

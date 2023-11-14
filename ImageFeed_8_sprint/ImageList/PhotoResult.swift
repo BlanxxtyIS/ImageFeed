@@ -8,7 +8,7 @@
 import Foundation
 
 //Структура для декодинга JSON ответа от Unsplash
-struct PhotoResult: Decodable {
+struct PhotoResult: Codable {
     let id: String
     let createdAt: String?
     let description: String?
@@ -23,14 +23,16 @@ struct PhotoResult: Decodable {
     }
 }
 
-struct UrlsResult: Decodable {
-    let thumbImageURL: String?
-    let largeImageURL: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case thumbImageURL = "thumb"
-        case largeImageURL = "full"
-    }
+struct UrlsResult: Codable {
+    let raw: String
+    let full: String
+    let regular: String
+    let small: String
+    let thumb: String
+}
+
+struct LikeResult: Codable {
+    let photo: PhotoResult
 }
 
 
