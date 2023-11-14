@@ -9,8 +9,8 @@ import UIKit
 import Kingfisher
 
 protocol ImagesListViewControllerProtocol: AnyObject {
-    var presenter: ImagesListViewPresenterProtocol? {get set}
-    var tableView: UITableView! {get set}
+    var presenter: ImagesListViewPresenterProtocol { get set }
+    var tableView: UITableView! { get set }
     func setupTableView()
     func errorLikeAlert(error: Error)
 }
@@ -18,7 +18,9 @@ protocol ImagesListViewControllerProtocol: AnyObject {
 
 //Основной экран показа картинок
 final class ImagesListViewController: UIViewController {
-    
+    var photosCount: Int {
+        photos.count
+    }
     private var imageListServiceObserber: NSObjectProtocol?
     
     private let imageListService = ImageListService.shared
@@ -30,40 +32,17 @@ final class ImagesListViewController: UIViewController {
     @IBOutlet public var tableView: UITableView!
     
     var presenter = ImagesListViewPresenter() as ImagesListViewPresenterProtocol
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        imageListService.fetchPhotosNextPage()
         presenter.viewDidLoad()
-        
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        imageListServiceObserber = NotificationCenter.default
-            .addObserver(
-                forName: ImageListService.didChangeNotification,
-                object: nil,
-                queue: .main) { [weak self] _ in
-                    guard let self = self else { return }
-                    self.updateTableView()
-                }
+        startObserveImagesListChanges()
     }
-    
-    func updateTableView() {
-        let oldCount = photos.count
-        let newCount = imageListService.photos.count
-        photos = imageListService.photos
-        if oldCount != newCount {
-            tableView.performBatchUpdates {
-                let indexPath = (oldCount..<newCount).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                tableView.insertRows(at: indexPath, with: .automatic)
-            } completion: { _ in }
-        }
-    }
+
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: ImageListService.didChangeNotification, object: nil)
+        stopObserveImagesListChanges()
     }
     
     private lazy var dateFormatter: DateFormatter = {
@@ -72,20 +51,61 @@ final class ImagesListViewController: UIViewController {
         formatter.timeStyle = .none
         return formatter
     }()
+}
+
+extension ImagesListViewController: UITableViewDelegate {
+    //Отвечает за действия, которые будут выполнены при тапе по ячейке
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
+    }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showSingleImageSegueIdentifier {
-            let viewController = segue.destination as! SingleImageViewController
-            let indexPath = sender as! IndexPath
-            let image = presenter.returnPhoto(indexPath: indexPath).largeImageURL
-            viewController.image = image
-        } else {
-            super.prepare(for: segue, sender: sender)
+    //Вычисление высоты ячеек
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        presenter.calculateHeightForRow(indexPath: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        presenter.chekIfNextPageNeeded(indexPath: indexPath)
+    }
+}
+
+extension ImagesListViewController: UITableViewDataSource {
+    //сколько ячеек будет в конкретной секции
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        presenter.photosCount
+    }
+    
+    //созд. ячейку и наполняем ее данными - передаем таблице
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
+        
+        guard let imageListCell = cell as? ImagesListCell else {
+            return UITableViewCell()
         }
+        configCell(for: imageListCell, with: indexPath)
+        return imageListCell
+    }
+}
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return print("не удалось получить индекс ячейки") }
+        presenter.imagesListCellDidTapLike(cell, indexPath: indexPath)
+    }
+    
+    internal func errorLikeAlert(error: Error) {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось поставить лайк",
+            preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
 extension ImagesListViewController {
+    
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let imageUrl = photos[indexPath.row].thumbImageURL
         let url = imageUrl
@@ -107,74 +127,36 @@ extension ImagesListViewController {
         cell.selectionStyle = .none
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row + 1 == imageListService.photos.count {
-            imageListService.fetchPhotosNextPage()
-        }
-    }
-}
-
-extension ImagesListViewController: UITableViewDelegate {
-    //Отвечает за действия, которые будут выполнены при тапе по ячейке
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
-    }
-    
-    //Вычисление высоты ячеек
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cell = photos[indexPath.row]
-        let imageSize = CGSize(width: cell.size.width, height: cell.size.height)
-        let aspectRatio = imageSize.width / imageSize.height
-        return tableView.frame.width / aspectRatio
-    }
-}
-
-extension ImagesListViewController: UITableViewDataSource {
-    //сколько ячеек будет в конкретной секции
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.photosCount
-    }
-    
-    //созд. ячейку и наполняем ее данными - передаем таблице
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
-        
-        guard let imageListCell = cell as? ImagesListCell else {
-            return UITableViewCell()
-        }
-        imageListCell.delegate = self
-        configCell(for: imageListCell, with: indexPath)
-        return imageListCell
-    }
-}
-
-extension ImagesListViewController: ImagesListCellDelegate {
-    
-    func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        let photo = photos[indexPath.row]
-        UIBlockingProgressHUD.show()
-        imageListService.like(id: photo.id, isLike: photo.isLiked) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    self.photos = self.imageListService.photos
-                    cell.establishLike(isLiked: self.photos[indexPath.row].isLiked)
-                    UIBlockingProgressHUD.dismiss()
-                case .failure(let error):
-                    UIBlockingProgressHUD.dismiss()
-                    self.errorLikeAlert(with: error)
-                }
-            }
+    private func startObserveImagesListChanges() {
+        imageListServiceObserber = NotificationCenter.default.addObserver(forName: ImageListService.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.presenter.updateTableViewAnimated()
         }
     }
     
-    private func errorLikeAlert(with error: Error) {
-        let alert = UIAlertController(
-            title: "Что-то пошло не так(",
-            message: "Не удалось поставить лайк",
-            preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
-        self.present(alert, animated: true, completion: nil)
+    private func stopObserveImagesListChanges() {
+        NotificationCenter.default.removeObserver(self, name: ImageListService.didChangeNotification, object: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showSingleImageSegueIdentifier {
+            let viewController = segue.destination as! SingleImageViewController
+            let indexPath = sender as! IndexPath
+            let imageUrl = presenter.returnPhoto(indexPath: indexPath).largeImageURL
+            viewController.image = imageUrl
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
+    
+    func updateTableViewAnimated() {
+        presenter.updateTableViewAnimated()
+    }
+}
+
+extension ImagesListViewController: ImagesListViewControllerProtocol {
+    func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
 }

@@ -88,8 +88,6 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
             }
         }
     }
-    
-    
     func returnPhoto(indexPath: IndexPath) -> Photo {
         photos[indexPath.row]
     }

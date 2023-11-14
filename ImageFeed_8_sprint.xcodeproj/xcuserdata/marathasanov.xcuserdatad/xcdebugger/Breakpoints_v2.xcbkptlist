@@ -7,22 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B1E5CC91-E3E8-4F9A-B0EC-CC515745502D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ImageFeed_8_sprint/ImageList/ImagesListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "ImagesListViewController"
-            landmarkType = "21">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "65A553F2-8031-43A4-BD6C-2AE79B2F2151"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -439,65 +423,241 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AE33C7F0-364E-4D4D-B18D-826381D02F3F"
+            uuid = "4BC2CF1B-A706-45E0-B48B-6E6822362855"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ImageFeed_8_sprint/ImageList/ImagesListViewController.swift"
+            filePath = "ImageFeed_8_sprint/ImageList/ImagesListPresenter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "updateTableView()"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "updateTableViewAnimated()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F5BB53E4-2394-4C67-BB53-322D20242E24"
+            uuid = "21A2E6F3-5570-4D14-9488-DE5BC785E57B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImageFeed_8_sprint/ImageList/ImagesListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
-            landmarkName = "updateTableView()"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "viewDidDisappear(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3E5F9C5D-5171-4202-B68D-89A70F45CD04"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageFeed_8_sprint/ImageList/ImagesListViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "viewDidDisappear(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8001F744-CBD6-4397-A28C-73C5AEF827B6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageFeed_8_sprint/ImageList/ImagesListViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "viewDidDisappear(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "363BE2E3-6D42-4174-BA9A-028A1C3A7A85"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageFeed_8_sprint/ImageList/ImagesListPresenter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "updateTableViewAnimated()"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "F5BB53E4-2394-4C67-BB53-322D20242E24 - f7666225f7f50893"
+                  uuid = "363BE2E3-6D42-4174-BA9A-028A1C3A7A85 - 2a460991d5a06602"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in ImageFeed_8_sprint.ImagesListViewController.updateTableView() -&gt; ()"
+                  symbolName = "closure #1 () -&gt; () in ImageFeed_8_sprint.ImagesListViewPresenter.updateTableViewAnimated() -&gt; ()"
                   moduleName = "ImageFeed_8_sprint"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/marathasanov/Desktop/swift/YaPraktikum/ImageFeed_8_sprint/ImageFeed_8_sprint/ImageList/ImagesListViewController.swift"
+                  urlString = "file:///Users/marathasanov/Desktop/swift/YaPraktikum/ImageFeed_8_sprint/ImageFeed_8_sprint/ImageList/ImagesListPresenter.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "56"
-                  endingLineNumber = "56"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
                   offsetFromSymbolStart = "128">
                </Location>
                <Location
-                  uuid = "F5BB53E4-2394-4C67-BB53-322D20242E24 - 1a1012785e7e313d"
+                  uuid = "363BE2E3-6D42-4174-BA9A-028A1C3A7A85 - a6fb35d0bdbeb13"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Int) -&gt; Foundation.IndexPath in closure #1 () -&gt; () in ImageFeed_8_sprint.ImagesListViewController.updateTableView() -&gt; ()"
+                  symbolName = "closure #1 (Swift.Int) -&gt; Foundation.IndexPath in closure #1 () -&gt; () in ImageFeed_8_sprint.ImagesListViewPresenter.updateTableViewAnimated() -&gt; ()"
                   moduleName = "ImageFeed_8_sprint"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/marathasanov/Desktop/swift/YaPraktikum/ImageFeed_8_sprint/ImageFeed_8_sprint/ImageList/ImagesListViewController.swift"
+                  urlString = "file:///Users/marathasanov/Desktop/swift/YaPraktikum/ImageFeed_8_sprint/ImageFeed_8_sprint/ImageList/ImagesListPresenter.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "57"
-                  endingLineNumber = "57"
+                  startingLineNumber = "50"
+                  endingLineNumber = "50"
                   offsetFromSymbolStart = "32">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E2645F72-C624-4409-827C-2E3A118A6951"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageFeed_8_sprint/ImageList/ImagesListPresenter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "updateTableViewAnimated()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B739C4FD-5D9B-4752-81E8-7AE053114F82"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageFeed_8_sprint/ImageList/ImagesListPresenter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "updateTableViewAnimated()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D54818A4-F729-4C4C-8D49-DE970B0C5E14"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageFeed_8_sprint/ImageList/ImagesListPresenter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "updateTableViewAnimated()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8E03731E-BDF7-456A-9BC8-1C69629EFCDD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageFeed_8_sprint/ImageList/ImagesListPresenter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "updateTableViewAnimated()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4A6A5C1B-7FDC-47CA-B97C-191BBAC1A2B3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageFeed_8_sprint/ImageList/ImagesListPresenter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "updateTableViewAnimated()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4A6A5C1B-7FDC-47CA-B97C-191BBAC1A2B3 - 4cafc6b9b231b295"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ImageFeed_8_sprint.ImagesListViewPresenter.updateTableViewAnimated() -&gt; ()"
+                  moduleName = "ImageFeed_8_sprint"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marathasanov/Desktop/swift/YaPraktikum/ImageFeed_8_sprint/ImageFeed_8_sprint/ImageList/ImagesListPresenter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "340">
+               </Location>
+               <Location
+                  uuid = "4A6A5C1B-7FDC-47CA-B97C-191BBAC1A2B3 - 2a460991d5a06602"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in ImageFeed_8_sprint.ImagesListViewPresenter.updateTableViewAnimated() -&gt; ()"
+                  moduleName = "ImageFeed_8_sprint"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marathasanov/Desktop/swift/YaPraktikum/ImageFeed_8_sprint/ImageFeed_8_sprint/ImageList/ImagesListPresenter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "128">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4A486206-D322-4F91-9AFB-15579E94B7B1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageFeed_8_sprint/ImageList/ImagesListPresenter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "updateTableViewAnimated()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
