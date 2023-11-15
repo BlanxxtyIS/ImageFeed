@@ -23,7 +23,22 @@ protocol ImagesListViewPresenterProtocol {
 final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
     func imagesListCellDidTapLike(_ cell: ImagesListCell, indexPath: IndexPath) {
         
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        imagesListService.like(id: photo.id, isLike: photo.isLiked) { [ weak self ] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(_):
+                self.photos = self.imagesListService.photos
+                cell.establishLike(isLiked: self.photos[indexPath.row].isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                view?.errorLikeAlert(error: error)
+            }
+        }
     }
+
     
     
     private var imagesListService = ImageListService.shared
@@ -74,25 +89,7 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
             imagesListService.fetchPhotosNextPage()
         }
     }
-    //MARK: -----
-//    func imagesListCellDidTapLike(_ cell: ImagesListCell, indexPath: IndexPath) {
-//        let photo = photos[indexPath.row]
-//        UIBlockingProgressHUD.show()
-//        imagesListService.changeLike(photoId: photo.id,
-//                                     token: oauth2TokenStorage.token!,
-//                                     isLike: photo.isLiked) { [ weak self ] result in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(_):
-//                self.photos = self.imagesListService.photos
-//                cell.establishLike(isLiked: self.photos[indexPath.row].isLiked)
-//                UIBlockingProgressHUD.dismiss()
-//            case .failure(let error):
-//                UIBlockingProgressHUD.dismiss()
-//                view?.errorLikeAlert(error: error)
-//            }
-//        }
-//    }
+
     
     func returnPhoto(indexPath: IndexPath) -> Photo {
         photos[indexPath.row]

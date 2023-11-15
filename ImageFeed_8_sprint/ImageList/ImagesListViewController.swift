@@ -125,7 +125,7 @@ extension ImagesListViewController {
             cell.dateLabel.text = "Пусто"
         }
         let isLiked = presenter.returnPhoto(indexPath: indexPath).isLiked
-        let likeImage = isLiked ? UIImage(named: "dislike") : UIImage(named: "like")
+        let likeImage = isLiked ? UIImage(named: "like") : UIImage(named: "dislike")
         cell.likeButton.setImage(likeImage, for: .normal)
         cell.selectionStyle = .none
     }
