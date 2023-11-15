@@ -8,6 +8,7 @@
 import XCTest
 
 final class ImageFeed_8_sprintUITests: XCTestCase {
+    print("Push")
     enum Constraints {
       static let email = "@yandex.ru"
       static let password = ""
