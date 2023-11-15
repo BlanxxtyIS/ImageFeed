@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension Array {
     mutating func withReplaced(itemAt index: Int, newValue: Element) -> [Element]{
@@ -17,4 +18,10 @@ extension Array {
         newArray[index] = newValue
         return newArray
     }
+}
+
+extension UIColor {
+    static var ypBlack: UIColor { UIColor(named: "YP BLACK") ?? .black }
+    static var ypGray: UIColor { UIColor(named: "YP Gray") ?? .gray }
+    static var ypWhite: UIColor { UIColor(named: "YP White") ?? .white }
 }

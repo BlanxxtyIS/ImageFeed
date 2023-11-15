@@ -72,12 +72,14 @@ extension ImagesListViewController: UITableViewDelegate {
 extension ImagesListViewController: UITableViewDataSource {
     //сколько ячеек будет в конкретной секции
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.photosCount
+        print(presenter.photosCount)
+        return presenter.photosCount
     }
     
     //созд. ячейку и наполняем ее данными - передаем таблице
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
+        print(cell)
         
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
