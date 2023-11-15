@@ -7,12 +7,16 @@
 
 import Foundation
 //Будет использоваться в UI части приложени
-struct Photo {
+struct Photo: Codable {
     let id: String
     let size: CGSize
     let createdAt: Date?
     let welcomeDescription: String?
-    let thumbImageURL: URL
-    let largeImageURL: URL
+    let thumbImageURL: String
+    let largeImageURL: String
     let isLiked: Bool
+}
+
+struct Like: Decodable {
+    let photo: PhotoResult?
 }

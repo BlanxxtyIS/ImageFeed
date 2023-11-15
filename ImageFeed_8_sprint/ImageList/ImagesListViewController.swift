@@ -107,10 +107,11 @@ extension ImagesListViewController: ImagesListCellDelegate {
 }
 
 extension ImagesListViewController {
-    
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        let imageUrl = photos[indexPath.row].thumbImageURL
-        let url = imageUrl
+        cell.delegate = self
+        cell.likeButton.accessibilityIdentifier = "LikeButton"
+        let imageUrl = presenter.returnPhoto(indexPath: indexPath).thumbImageURL
+        let url = URL(string: imageUrl)
         let placeholder = UIImage(named: "Stubs")
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(with: url, placeholder: placeholder){[weak self] _ in
@@ -118,14 +119,14 @@ extension ImagesListViewController {
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
             cell.cellImage.kf.indicatorType = .none
         }
-        if let date = imageListService.photos[indexPath.row].createdAt {
+        if let date = presenter.returnPhoto(indexPath: indexPath).createdAt {
             cell.dateLabel.text = dateFormatter.string(from: date)
         } else {
             cell.dateLabel.text = "Пусто"
         }
-        let isLiked = imageListService.photos[indexPath.row].isLiked == false
-        let like = isLiked ? UIImage(named: "dislike") : UIImage(named: "like")
-        cell.likeButton.setImage(like, for: .normal)
+        let isLiked = presenter.returnPhoto(indexPath: indexPath).isLiked
+        let likeImage = isLiked ? UIImage(named: "dislike") : UIImage(named: "like")
+        cell.likeButton.setImage(likeImage, for: .normal)
         cell.selectionStyle = .none
     }
     
@@ -144,7 +145,7 @@ extension ImagesListViewController {
             let viewController = segue.destination as! SingleImageViewController
             let indexPath = sender as! IndexPath
             let imageUrl = presenter.returnPhoto(indexPath: indexPath).largeImageURL
-            viewController.image = imageUrl
+            viewController.image = URL(string: imageUrl)
         } else {
             super.prepare(for: segue, sender: sender)
         }
