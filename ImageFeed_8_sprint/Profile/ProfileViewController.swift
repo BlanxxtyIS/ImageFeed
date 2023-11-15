@@ -22,7 +22,6 @@ final class ProfileViewController: UIViewController {
     private let storageToken = OAuth2TokenStorage()
     private let profileService = ProfileSevice.shared
     private var profileImageServiceObserver: NSObjectProtocol?
-    private let webViewViewController = WebViewViewController.shared
     var presenter: ProfilePresenterProtocol?
     
     //Создание_Настройка картинки
@@ -71,6 +70,7 @@ final class ProfileViewController: UIViewController {
                                            action: #selector(Self.didTapButton))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = UIColor(named: "YP Red")
+        button.accessibilityIdentifier = "LogoutButton"
         return button
     }()
     
@@ -110,7 +110,6 @@ final class ProfileViewController: UIViewController {
     
     private func logout() {
         let logoutAccount: Bool = KeychainWrapper.standard.removeObject(forKey: "Auth token")
-        WebViewViewController.clean()
         cleanServicesData()
         tabBarController?.dismiss(animated: true)
         guard let window = UIApplication.shared.windows.first else {
@@ -120,7 +119,6 @@ final class ProfileViewController: UIViewController {
     }
     
     private func cleanServicesData() {
-        ImageListService.shared.clean()
         ProfileSevice.shared.clean()
         ProfileImageService.shared.clean()
     }

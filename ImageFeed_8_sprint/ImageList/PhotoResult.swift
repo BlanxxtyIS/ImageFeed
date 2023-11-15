@@ -9,17 +9,29 @@ import Foundation
 
 //Структура для декодинга JSON ответа от Unsplash
 struct PhotoResult: Codable {
+    static let dateFormatter = ISO8601DateFormatter()
+    
     let id: String
     let createdAt: String?
+    let width: Double
+    let height: Double
     let description: String?
-    let likedByUser: Bool
-    let width, height: CGFloat
     let urls: UrlsResult
+    let likedByUser: Bool
     
-    private enum CodingKeys: String, CodingKey {
-        case createdAt = "created_at"
-        case likedByUser = "liked_by_user"
-        case id, width, height, description, urls
+    func asDomain() -> Photo {
+        let photo = Photo(id: self.id,
+                          size: CGSize(width: self.width, height: self.height),
+                          createdAt: self.makeDate(body: self),
+                          welcomeDescription: self.description,
+                          thumbImageURL: URL(string: self.urls.small)!,
+                          largeImageURL: URL(string: self.urls.full)!,
+                          isLiked: self.likedByUser)
+        return photo
+    }
+    
+    private func makeDate(body: PhotoResult) -> Date? {
+        return body.createdAt.flatMap { PhotoResult.dateFormatter.date(from: $0) }
     }
 }
 
@@ -34,5 +46,6 @@ struct UrlsResult: Codable {
 struct LikeResult: Codable {
     let photo: PhotoResult
 }
+
 
 

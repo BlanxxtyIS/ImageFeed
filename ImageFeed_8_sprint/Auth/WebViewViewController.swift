@@ -28,29 +28,26 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     
     var presenter: WebViewPresenterProtocol?
     
-    static let shared = WebViewViewController()
-    let authSevice = OAuth2Service()
-    
-    private var estigmatedProgressObservation: NSKeyValueObservation?
-    
     @IBOutlet weak var progressView: UIProgressView!
-    
     @IBOutlet weak var webView: WKWebView!
+    
     weak var delegate: WebViewViewControllerDelegate?
+    private var estigmatedProgressObservation: NSKeyValueObservation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        estigmatedProgressObservation = webView.observe(\.estimatedProgress, options: [], changeHandler: { [weak self] _ ,  _ in
+            guard let self = self else { return }
+            self.presenter?.didUpdateProgressValue(webView.estimatedProgress)
+        })
         webView.navigationDelegate = self
         webView.accessibilityIdentifier = "UnsplashWebView"
         presenter?.viewDidLoad()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
-    }
-    
-    @IBAction func didTapBackButton(_ sender: UIButton) {
-        delegate?.webViewViewControllerDidCancel(self)
     }
     
     func setProgressValue(_ newValue: Float) {
@@ -60,21 +57,12 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
         progressView.isHidden = isHidden
     }
     
+    @IBAction func didTapBackButton(_ sender: UIButton) {
+        delegate?.webViewViewControllerDidCancel(self)
+    }
+    
     func load(request: URLRequest) {
         webView.load(request)
-    }
-}
-//MARK: - Networking
-
-extension WebViewViewController {
-    
-    static func clean(){
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-            }
-        }
     }
 }
 
@@ -88,13 +76,7 @@ extension WebViewViewController: WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
-    
-    func switchToSplashScreen() {
-        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-        let splashScreenViewController = SplashViewController()
-        window.rootViewController = splashScreenViewController
-    }
-    
+
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if let url = navigationAction.request.url {
             return presenter?.code(from: url)
@@ -102,5 +84,8 @@ extension WebViewViewController: WKNavigationDelegate {
         return nil
     }
 }
+
+
+
 
 

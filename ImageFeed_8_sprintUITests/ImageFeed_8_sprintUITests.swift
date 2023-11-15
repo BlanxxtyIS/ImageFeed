@@ -8,6 +8,12 @@
 import XCTest
 
 final class ImageFeed_8_sprintUITests: XCTestCase {
+    enum Constraints {
+      static let email = "mvtvr21@yandex.ru"
+      static let password = "Mighty59311"
+      static let name = "Marat Khasanov"
+      static let login = "@Blanxxty"
+    }
     //переменная приложения
     private let app = XCUIApplication()
     
@@ -19,49 +25,47 @@ final class ImageFeed_8_sprintUITests: XCTestCase {
     }
     
     func testAuth() throws {
-        //тест авторизации
+        XCTAssertTrue(app.buttons["Authenticate"].waitForExistence(timeout: 3))
         app.buttons["Authenticate"].tap()
         
         let webView = app.webViews["UnsplashWebView"]
-        
         XCTAssertTrue(webView.waitForExistence(timeout: 3))
-        
         let loginTextField = webView.descendants(matching: .textField).element
-        XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
-        
+        XCTAssertTrue(loginTextField.waitForExistence(timeout: 3))
         loginTextField.tap()
-        loginTextField.typeText(".ru")
-        webView.swipeUp()
+        loginTextField.typeText(Constraints.email)
+        webView.tap()
         
-        let passwordTextFiel = webView.descendants(matching: .secureTextField).element
-        XCTAssertTrue(passwordTextFiel.waitForExistence(timeout: 5))
+        let passwordTextField = webView.descendants(matching: .secureTextField).element
+        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 3))
+        passwordTextField.tap()
+        passwordTextField.typeText(Constraints.password)
+        webView.tap()
+        sleep(3)
         
-        passwordTextFiel.tap()
-        passwordTextFiel.typeText("")
-        webView.swipeUp()
+        XCTAssertTrue(webView.buttons["Login"].waitForExistence(timeout: 3))
+        webView.buttons["Login"].tap()
         
-        let webViewsQuery = webView.descendants(matching: .button).element
-        webViewsQuery.buttons["Login"].tap()
-            
         let tablesQuery = app.tables
         let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
-            
-        XCTAssertTrue(cell.waitForExistence(timeout: 5))
         
-        print(app.debugDescription)
+        XCTAssertTrue(cell.waitForExistence(timeout: 5))
         
     }
     
     func testFeed() throws {
         //тест ленты
-        let tablesQuery = app.tables
+        XCTAssertTrue(app.tabBars.buttons.element(boundBy: 0).waitForExistence(timeout: 4))
         
-        let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
-        cell.swipeUp()
+        let tableQuery = app.tables
+        let cell = tableQuery.children(matching: .cell).element(boundBy: 0)
+        XCTAssertTrue(cell.waitForExistence(timeout: 3))
+        cell.swipeDown()
         sleep(2)
         
-        let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
-        
+        let cellToLike = tableQuery.children(matching: .cell).element(boundBy: 1)
+        XCTAssertTrue(cellToLike.waitForExistence(timeout: 3))
+        XCTAssertTrue(cellToLike.buttons["like"].waitForExistence(timeout: 1))
         cellToLike.buttons["like"].tap()
         sleep(2)
         cellToLike.buttons["dislike"].tap()
@@ -79,15 +83,18 @@ final class ImageFeed_8_sprintUITests: XCTestCase {
     }
     
     func testProfile() throws {
-        //тест профиля
-        sleep(3)
+        XCTAssertTrue(app.tabBars.buttons.element(boundBy: 1).waitForExistence(timeout: 3))
         app.tabBars.buttons.element(boundBy: 1).tap()
         
-        XCTAssertTrue(app.staticTexts["Marat Khasanov"].exists)
-        XCTAssertTrue(app.staticTexts["@blanxxty"].exists)
+        XCTAssertTrue(app.buttons["LogoutButton"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts[Constraints.name].exists)
+        XCTAssertTrue(app.staticTexts[Constraints.login].exists)
         
-        app.buttons["logout button"].tap()
+        app.buttons["LogoutButton"].tap()
         
-        app.alerts["Bye bye!"].scrollViews.otherElements.buttons["Yes"].tap()
+        XCTAssertTrue(app.alerts["Alert"].waitForExistence(timeout: 3))
+        app.alerts["Alert"].buttons["Да"].tap()
+        
+        XCTAssertTrue(app.buttons["Authenticate"].waitForExistence(timeout: 3))
     }
 }

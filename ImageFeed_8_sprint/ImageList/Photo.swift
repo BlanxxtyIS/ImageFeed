@@ -7,7 +7,7 @@
 
 import Foundation
 //Будет использоваться в UI части приложени
-struct Photo: Codable {
+struct Photo {
     let id: String
     let size: CGSize
     let createdAt: Date?
@@ -15,8 +15,4 @@ struct Photo: Codable {
     let thumbImageURL: URL
     let largeImageURL: URL
     let isLiked: Bool
-}
-
-struct Like: Decodable {
-    let photo: PhotoResult?
 }

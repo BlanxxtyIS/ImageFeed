@@ -8,9 +8,13 @@
 import Foundation
 
 extension Array {
-    func replacement(itemAt: Int, newValue: Photo) -> [Photo] {
-        var photos = ImageListService.shared.photos
-        photos.replaceSubrange(itemAt...itemAt, with: [newValue])
-        return photos
+    mutating func withReplaced(itemAt index: Int, newValue: Element) -> [Element]{
+        guard index >= 0, index < self.count else {
+            print("индекс превышает значение")
+            return self
+        }
+        var newArray = self
+        newArray[index] = newValue
+        return newArray
     }
 }

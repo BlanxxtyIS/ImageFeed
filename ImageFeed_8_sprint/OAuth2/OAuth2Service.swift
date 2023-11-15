@@ -69,26 +69,38 @@ class OAuth2Service {
 //Сетевой запрос с использованием вспомогательных функций
 //Используя вспомогательные функции, ответ от сервера можно запросить и обработать так:
 extension OAuth2Service {
-    //Делаем POST request
     private func authTokenRequest(code: String) -> URLRequest {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
-            + "?client_id=\(authHelper.accessKey)"
-            + "&&client_secret=\(authHelper.secretKey)"
-            + "&&redirect_uri=\(authHelper.redirectURI)"
+            + "?client_id=\(AuthConfiguration.standard.accessKey)"
+            + "&&client_secret=\(AuthConfiguration.standard.secretKey)"
+            + "&&redirect_uri=\(AuthConfiguration.standard.redirectURI)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
-            baseURL: URL(string: "https://unsplash.com")!)
-    }
+            baseURL: URL(string: "https://unsplash.com")!
+        ) }
 }
 //MARK: - HTTP Request
 //Вспомогательный метод для создания запросов
 extension URLRequest {
+    static func makeImageListHTTPRequest(
+        path: String,
+        httpMethod: String,
+        baseURL: URL = AuthConfiguration.standard.defaultBaseURL,
+        token: String,
+        headerField: String
+    ) -> URLRequest {
+        var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
+        request.httpMethod = httpMethod
+        request.setValue("Bearer \(token)", forHTTPHeaderField: headerField)
+        return request
+    }
+    
     static func makeHTTPRequest(
         path: String,
         httpMethod: String,
-        baseURL: URL = AuthConfiguration.standard.defaultApiBaseURL
+        baseURL: URL = AuthConfiguration.standard.defaultBaseURL
     ) -> URLRequest {
         var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
         request.httpMethod = httpMethod

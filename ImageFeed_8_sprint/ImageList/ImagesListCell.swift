@@ -26,9 +26,7 @@ final class ImagesListCell: UITableViewCell {
     }
     
     func establishLike(isLiked: Bool){
-        let like = isLiked ? UIImage(named: "like") : UIImage(named: "dislike")
-        likeButton.imageView?.image = like
-        likeButton.setImage(like, for: .normal)
+        likeButton.setBackgroundImage(isLiked ? UIImage(named: "like") : UIImage(named: "dislike"), for: .normal)
     }
     
     @IBAction private func likeButtonClicked() {

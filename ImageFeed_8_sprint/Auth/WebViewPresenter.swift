@@ -19,7 +19,8 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     
     weak var view: WebViewViewControllerProtocol?
     var authHelper: AuthHelperProtocol
-    init(authHelper: AuthHelperProtocol) {
+    init(view: WebViewViewControllerProtocol? = nil, authHelper: AuthHelperProtocol) {
+        self.view = view
         self.authHelper = authHelper
     }
     
@@ -39,10 +40,7 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     func shouldHideProgress(for value: Float) -> Bool {
         abs(value - 1.0) <= 0.0001
     }
-    
-    //Получаем из navigationAction - URL, Создаем URLComponents
-    //Ищем в массиве значение name == code, возвращаем value
-    //При успешной авторизации перехватываем строку "код"
+
     func code(from url: URL) -> String? {
         authHelper.code(from: url)
     }

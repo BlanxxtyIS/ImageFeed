@@ -73,8 +73,9 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
     func imagesListCellDidTapLike(_ cell: ImagesListCell, indexPath: IndexPath) {
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
-        imagesListService.like(id: photo.id, isLike: photo.isLiked) { [weak self] result in
-            
+        imagesListService.changeLike(photoId: photo.id,
+                                     token: oauth2TokenStorage.token!,
+                                     isLike: photo.isLiked) { [ weak self ] result in
             guard let self = self else { return }
             switch result {
             case .success(_):
@@ -84,10 +85,10 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
             case .failure(let error):
                 UIBlockingProgressHUD.dismiss()
                 view?.errorLikeAlert(error: error)
-                
             }
         }
     }
+    
     func returnPhoto(indexPath: IndexPath) -> Photo {
         photos[indexPath.row]
     }
