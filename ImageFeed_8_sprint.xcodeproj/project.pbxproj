@@ -134,7 +134,6 @@
 				F44232512AF6584D00515C7A /* Extension.swift */,
 				F4C11E052AF003E700C82579 /* ImageList */,
 				F4E47E292AB9B21000E77A82 /* Profile */,
-				F48C026C2A9FA03900B83B32 /* ImagesList */,
 				F4E47E2A2AB9B21D00E77A82 /* SingleImageView */,
 				F4B216AF2ACFD73700C7A19D /* Auth */,
 				F4B216B42AD03CA700C7A19D /* OAuth2 */,
@@ -145,13 +144,6 @@
 				F48C02442A9F782200B83B32 /* Info.plist */,
 			);
 			path = ImageFeed_8_sprint;
-			sourceTree = "<group>";
-		};
-		F48C026C2A9FA03900B83B32 /* ImagesList */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ImagesList;
 			sourceTree = "<group>";
 		};
 		F4B216AF2ACFD73700C7A19D /* Auth */ = {
