@@ -68,7 +68,7 @@ final class ImagesListViewPresenterSpy: ImagesListViewPresenterProtocol {
         if indexPath == IndexPath(row: 1, section: 0) {
             returnPhotoAtIndex = true
         }
-        return Photo.init(id: "test", size: CGSize(), createdAt: Date(), welcomeDescription: "test", thumbImageURL: URL(string: "https://www.yandex.ru")!, largeImageURL: URL(string: "https://www.yandex.ru")!, isLiked: false)
+        return Photo.init(id: "test", size: CGSize(), createdAt: Date(), welcomeDescription: "test", thumbImageURL: "https://www.yandex.ru", largeImageURL: "https://www.yandex.ru", isLiked: false)
     }
 }
 

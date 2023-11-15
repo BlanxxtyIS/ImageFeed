@@ -9,8 +9,8 @@ import XCTest
 
 final class ImageFeed_8_sprintUITests: XCTestCase {
     enum Constraints {
-      static let email = "mvtvr21@yandex.ru"
-      static let password = "Mighty59311"
+      static let email = "@yandex.ru"
+      static let password = ""
       static let name = "Marat Khasanov"
       static let login = "@Blanxxty"
     }
@@ -54,7 +54,6 @@ final class ImageFeed_8_sprintUITests: XCTestCase {
     }
     
     func testFeed() throws {
-        //тест ленты
         XCTAssertTrue(app.tabBars.buttons.element(boundBy: 0).waitForExistence(timeout: 4))
         
         let tableQuery = app.tables
@@ -63,23 +62,23 @@ final class ImageFeed_8_sprintUITests: XCTestCase {
         cell.swipeDown()
         sleep(2)
         
-        let cellToLike = tableQuery.children(matching: .cell).element(boundBy: 1)
-        XCTAssertTrue(cellToLike.waitForExistence(timeout: 3))
-        XCTAssertTrue(cellToLike.buttons["like"].waitForExistence(timeout: 1))
-        cellToLike.buttons["like"].tap()
-        sleep(2)
-        cellToLike.buttons["dislike"].tap()
-        sleep(2)
+        let cellTwo = tableQuery.children(matching: .cell).element(boundBy: 1)
+        XCTAssertTrue(cellTwo.waitForExistence(timeout: 3))
+        XCTAssertTrue(cellTwo.buttons["LikeButton"].waitForExistence(timeout: 1))
+        cellTwo.buttons["LikeButton"].tap()
+        sleep(3)
+        cellTwo.buttons["LikeButton"].tap()
+        sleep(3)
         
-        cellToLike.tap()
-        sleep(2)
-    
+        cellTwo.tap()
+        sleep(3)
+        
         let image = app.scrollViews.images.element(boundBy: 0)
         image.pinch(withScale: 3, velocity: 1)
         image.pinch(withScale: 0.5, velocity: -1)
         
-        let navBackButtonWhiteButton = app.buttons["nav back button white"]
-        navBackButtonWhiteButton.tap()
+        XCTAssertTrue(app.buttons["BackButton"].waitForExistence(timeout: 3))
+        app.buttons["BackButton"].tap()
     }
     
     func testProfile() throws {
