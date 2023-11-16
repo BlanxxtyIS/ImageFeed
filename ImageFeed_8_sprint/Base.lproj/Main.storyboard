@@ -166,6 +166,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V0r-iB-gNU">
                                 <rect key="frame" x="8" y="8" width="44" height="44"/>
+                                <accessibility key="accessibilityConfiguration" identifier="BackButton"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="fuT-4E-qTH"/>
                                     <constraint firstAttribute="width" constant="44" id="wqE-mo-cUX"/>
@@ -200,6 +201,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="wqE-Nf-usd"/>
                     <connections>
+                        <outlet property="backButton" destination="V0r-iB-gNU" id="XNI-f6-LNI"/>
                         <outlet property="imageView" destination="4a4-Ip-XxD" id="ymZ-2j-dnJ"/>
                         <outlet property="scrollView" destination="NLq-dC-xcM" id="uvW-RT-5hO"/>
                     </connections>

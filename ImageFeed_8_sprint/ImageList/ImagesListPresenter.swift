@@ -39,8 +39,6 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
         }
     }
 
-    
-    
     private var imagesListService = ImageListService.shared
     private let oauth2TokenStorage = OAuth2TokenStorage.shared
     
@@ -85,8 +83,10 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
     }
     
     func chekIfNextPageNeeded(indexPath: IndexPath) {
-        if indexPath.row + 1 == photos.count {
-            imagesListService.fetchPhotosNextPage()
+        if !ProcessInfo.processInfo.arguments.contains("testMode") {
+            if indexPath.row + 1 == photos.count {
+                imagesListService.fetchPhotosNextPage()
+            }
         }
     }
 

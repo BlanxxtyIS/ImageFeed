@@ -70,7 +70,6 @@ final class ProfileViewController: UIViewController {
                                            action: #selector(Self.didTapButton))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = UIColor(named: "YP Red")
-        button.accessibilityIdentifier = "LogoutButton"
         return button
     }()
     
@@ -85,6 +84,7 @@ final class ProfileViewController: UIViewController {
             guard let self = self else { return }
             self.updateAvatar()
         }
+        button.accessibilityIdentifier = "LogoutButton"
         view.backgroundColor = UIColor(named: "YP BLACK")
         updateAvatar()
         
@@ -102,7 +102,7 @@ final class ProfileViewController: UIViewController {
         )
         alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
-            self.logout()
+            self.presenter?.cleanTokenDataAndResetToAuth()
         }))
         alert.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
