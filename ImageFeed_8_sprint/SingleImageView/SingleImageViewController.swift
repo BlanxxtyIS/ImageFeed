@@ -15,7 +15,7 @@ final class SingleImageViewController: UIViewController {
             setImage()
         }
     }
-
+    @IBOutlet weak var backButton: UIButton!
     @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var imageView: UIImageView!
 
@@ -24,6 +24,7 @@ final class SingleImageViewController: UIViewController {
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         setImage()
+        backButton.accessibilityIdentifier = "BackButton"
     }
     
     @IBAction private func didTapShareButton(_ sender: UIButton) {

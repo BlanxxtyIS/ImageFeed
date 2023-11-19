@@ -20,15 +20,16 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var dateLabel: UILabel!
     
+    
     override func prepareForReuse(){
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
+        likeButton.accessibilityIdentifier = "BackButton"
+        
     }
     
     func establishLike(isLiked: Bool){
-        let like = isLiked ? UIImage(named: "like") : UIImage(named: "dislike")
-        likeButton.imageView?.image = like
-        likeButton.setImage(like, for: .normal)
+        likeButton.setBackgroundImage(isLiked ? UIImage(named: "like") : UIImage(named: "dislike"), for: .normal)
     }
     
     @IBAction private func likeButtonClicked() {

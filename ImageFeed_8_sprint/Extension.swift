@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension Array {
     func replacement(itemAt: Int, newValue: Photo) -> [Photo] {
@@ -13,4 +14,10 @@ extension Array {
         photos.replaceSubrange(itemAt...itemAt, with: [newValue])
         return photos
     }
+}
+
+extension UIColor {
+    static var ypBlack: UIColor { UIColor(named: "YP BLACK") ?? .black }
+    static var ypGray: UIColor { UIColor(named: "YP Gray") ?? .gray }
+    static var ypWhite: UIColor { UIColor(named: "YP White") ?? .white }
 }

@@ -28,6 +28,23 @@
             </objects>
             <point key="canvasLocation" x="-1745" y="138"/>
         </scene>
+        <!--Profile-->
+        <scene sceneID="BIk-l8-oGd">
+            <objects>
+                <viewController storyboardIdentifier="ProfileViewController" title="Profile" id="PUo-5r-fds" customClass="ProfileViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="T71-0Y-5w6">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="KVy-Uc-cEo"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="ry1-WB-N0L"/>
+                    <navigationItem key="navigationItem" id="ZzS-7I-yeE"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3cu-FP-afo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-762" y="578"/>
+        </scene>
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -56,10 +73,10 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jh2-sf-Bp6">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jh2-sf-Bp6" userLabel="Like Button">
                                                     <rect key="frame" x="333" y="4" width="44" height="44"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" image="like"/>
+                                                    <state key="normal" image="dislike"/>
                                                     <connections>
                                                         <action selector="likeButtonClicked" destination="W64-Ko-w5k" eventType="touchUpInside" id="MM1-g4-es3"/>
                                                     </connections>
@@ -112,7 +129,7 @@
                     <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="6JZ-zO-BIj"/>
                     <navigationItem key="navigationItem" id="0Ui-ax-Zj0"/>
                     <connections>
-                        <outlet property="tableView" destination="Qhf-CL-ERS" id="NXZ-qj-Cag"/>
+                        <outlet property="tableView" destination="Qhf-CL-ERS" id="AkI-XN-Kv9"/>
                         <segue destination="5qU-xZ-z7J" kind="presentation" identifier="ShowSingleImage" modalPresentationStyle="fullScreen" id="twb-W1-PTc"/>
                     </connections>
                 </viewController>
@@ -149,6 +166,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V0r-iB-gNU">
                                 <rect key="frame" x="8" y="8" width="44" height="44"/>
+                                <accessibility key="accessibilityConfiguration" identifier="BackButton"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="fuT-4E-qTH"/>
                                     <constraint firstAttribute="width" constant="44" id="wqE-mo-cUX"/>
@@ -183,6 +201,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="wqE-Nf-usd"/>
                     <connections>
+                        <outlet property="backButton" destination="V0r-iB-gNU" id="XNI-f6-LNI"/>
                         <outlet property="imageView" destination="4a4-Ip-XxD" id="ymZ-2j-dnJ"/>
                         <outlet property="scrollView" destination="NLq-dC-xcM" id="uvW-RT-5hO"/>
                     </connections>
@@ -205,6 +224,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YOd-bK-Adv">
                                 <rect key="frame" x="16" y="680" width="361" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="ht7-s4-RWe"/>
                                 </constraints>
@@ -235,6 +255,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ayz-hY-ccV"/>
+                    <connections>
+                        <outlet property="authButton" destination="YOd-bK-Adv" id="pGG-4g-E3y"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dV3-Ru-soU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -261,12 +284,12 @@
         <!--Web View View Controller-->
         <scene sceneID="JXO-3p-lD3">
             <objects>
-                <viewController id="1Gk-VN-u8S" customClass="WebViewViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" id="1Gk-VN-u8S" customClass="WebViewViewController" customModule="ImageFeed_8_sprint" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Mfq-gw-agh">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GRb-Hk-qe4">
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GRb-Hk-qe4" userLabel="WebViewViewController">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <color key="backgroundColor" name="YP White"/>
                                 <wkWebViewConfiguration key="configuration">
@@ -317,7 +340,7 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="like" width="44" height="44"/>
+        <image name="dislike" width="44" height="44"/>
         <image name="logo_of_Unsplash" width="60" height="60"/>
         <image name="nav_back_button" width="24" height="24"/>
         <image name="nav_back_button_white" width="24" height="24"/>

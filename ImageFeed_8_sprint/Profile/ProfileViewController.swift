@@ -10,12 +10,19 @@ import Kingfisher
 import SwiftKeychainWrapper
 import WebKit
 
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func updateAvatar(url: URL)
+    func updateProfile(profile: Profile)
+}
+
 final class ProfileViewController: UIViewController {
     
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private let storageToken = OAuth2TokenStorage()
     private let profileService = ProfileSevice.shared
     private var profileImageServiceObserver: NSObjectProtocol?
-    private let webViewViewController = WebViewViewController.shared
+    var presenter: ProfilePresenterProtocol?
     
     //Создание_Настройка картинки
     private let imageView: UIImageView = {
@@ -71,11 +78,13 @@ final class ProfileViewController: UIViewController {
         setupAllViews()
         setupAllConstaints()
         updateProfileDetails(profile: profileService.profile)
+        presenter?.viewDidLoad()
         
         profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
             guard let self = self else { return }
             self.updateAvatar()
         }
+        button.accessibilityIdentifier = "LogoutButton"
         view.backgroundColor = UIColor(named: "YP BLACK")
         updateAvatar()
         
@@ -93,7 +102,7 @@ final class ProfileViewController: UIViewController {
         )
         alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
-            self.logout()
+            self.presenter?.cleanTokenDataAndResetToAuth()
         }))
         alert.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -101,7 +110,6 @@ final class ProfileViewController: UIViewController {
     
     private func logout() {
         let logoutAccount: Bool = KeychainWrapper.standard.removeObject(forKey: "Auth token")
-        WebViewViewController.clean()
         cleanServicesData()
         tabBarController?.dismiss(animated: true)
         guard let window = UIApplication.shared.windows.first else {
@@ -111,7 +119,6 @@ final class ProfileViewController: UIViewController {
     }
     
     private func cleanServicesData() {
-        ImageListService.shared.clean()
         ProfileSevice.shared.clean()
         ProfileImageService.shared.clean()
     }

@@ -9,32 +9,26 @@ import UIKit
 //алгоритм для постраничной загрузки из сети
 final class ImageListService: UIViewController {
     
-    static let shared = ImageListService()  //Синглтон
-    
-    private (set) var photos: [Photo] = []  //скаченные фото
-    
-    var lastsLoadedPage: Int?   //последняя страница
+    static let shared = ImageListService()
     
     private let perPage = "10"
-    
-    private let oAuth2StorageToken = OAuth2TokenStorage.shared
-    
-    static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange") //Нотификация
-    
-    var task: URLSessionTask?
-    
+    private let orderBy = "latest"
     private let urlSession = URLSession.shared
-    
+    private var task: URLSessionTask?
+    private(set) var photos: [Photo] = []
+    private var lastLoadedPage: Int?
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private let dateFormatter = ISO8601DateFormatter()
+
     
     //Получаем ответ из сети, формирует объект Photo для каждого PhotoResult
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
         //какую страницу загружать
         if task != nil { return }
-        let nextPage = lastsLoadedPage == nil ? 1 : lastsLoadedPage! + 1
+        let nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
         
-        guard let token = oAuth2StorageToken.token else { return }
+        guard let token = oauth2TokenStorage.token else { return }
         let request = photoRequest(token: token, page: String(nextPage), perPage: perPage)
         let task = urlSession.objectTask(for: request) {[weak self] (result: Result<[PhotoResult], Error>) in
             DispatchQueue.main.async {
@@ -44,7 +38,7 @@ final class ImageListService: UIViewController {
                     for photoResult in photoResult {
                         self.photos.append(self.toChange(photoResult: photoResult))
                     }
-                    self.lastsLoadedPage = nextPage
+                    self.lastLoadedPage = nextPage
                     NotificationCenter.default.post(name: ImageListService.didChangeNotification, object: self, userInfo: ["Images": self.photos])
                 case .failure(let error):
                     print("Не получили данные из запроса ")
@@ -56,26 +50,22 @@ final class ImageListService: UIViewController {
         self.task = task
         task.resume()
     }
-    
-    func clean(){
-        photos = []
-        lastsLoadedPage = nil
-        task?.cancel()
-        task = nil
-    }
 }
 
 extension ImageListService {
-                                
+    
     private func photoRequest(token: String, page: String, perPage: String) -> URLRequest {
         var request = URLRequest.makeHTTPRequest(
             path: "/photos?page=\(page)&&per_page=\(perPage)",
             httpMethod: "GET",
-            baseURL: defaultApiBaseURL)
+            baseURL: DefaultApiBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
-
+    
+    
+    static let didChangeNotification = Notification.Name("ImagesListServiceDidChange")
+    
     private func toChange(photoResult: PhotoResult) -> Photo {
         return Photo.init(
             id: photoResult.id,
@@ -91,7 +81,7 @@ extension ImageListService {
         assert(Thread.isMainThread)
         task?.cancel()
         
-        guard let token = oAuth2StorageToken.token else { return }
+        guard let token = oauth2TokenStorage.token else { return }
         var request: URLRequest
         if isLike {
             request = removeLike(token, id: id)!
@@ -127,14 +117,15 @@ extension ImageListService {
     func toPutLike(_ token: String, id: String) -> URLRequest? {
         var request = URLRequest.makeHTTPRequest(path: "photos/\(id)/like",
                                                  httpMethod: "POST",
-                                                 baseURL: defaultApiBaseURL)
+                                                 baseURL: DefaultApiBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
+    
     func removeLike(_ token: String, id: String) -> URLRequest? {
         var request = URLRequest.makeHTTPRequest(path: "photos/\(id)/like",
                                                        httpMethod: "DELETE",
-                                                       baseURL: defaultApiBaseURL)
+                                                       baseURL: DefaultApiBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

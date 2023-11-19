@@ -9,6 +9,12 @@ import UIKit
 import WebKit
 import SwiftKeychainWrapper
 
+public protocol WebViewViewControllerProtocol: AnyObject {
+    var presenter: WebViewPresenterProtocol? { get set }
+    func load(request: URLRequest)
+    func setProgressValue(_ newValue: Float)
+    func setProgressHidden(_ isHidden: Bool)
+}
 
 protocol WebViewViewControllerDelegate: AnyObject {
     //webViewViewController - получил код
@@ -18,76 +24,46 @@ protocol WebViewViewControllerDelegate: AnyObject {
 }
 
 //Экран показа веб-страницы
-final class WebViewViewController: UIViewController {
-    static let shared = WebViewViewController()
-    let authSevice = OAuth2Service()
+final class WebViewViewController: UIViewController & WebViewViewControllerProtocol {
     
-    private var estigmatedProgressObservation: NSKeyValueObservation?
+    var presenter: WebViewPresenterProtocol?
     
     @IBOutlet weak var progressView: UIProgressView!
-    
     @IBOutlet weak var webView: WKWebView!
+    
     weak var delegate: WebViewViewControllerDelegate?
+    private var estigmatedProgressObservation: NSKeyValueObservation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         estigmatedProgressObservation = webView.observe(\.estimatedProgress, options: [], changeHandler: { [weak self] _ ,  _ in
             guard let self = self else { return }
-            self.updateProgress()
+            self.presenter?.didUpdateProgressValue(webView.estimatedProgress)
         })
+        
         webView.navigationDelegate = self
-        loadWebView()
+        webView.accessibilityIdentifier = "UnsplashWebView"
+        presenter?.viewDidLoad()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        estigmatedProgressObservation = webView.observe(
-            \.estimatedProgress,
-             options: [],
-             changeHandler: {[weak self] _, _ in
-                 guard let self = self else {return}
-                 self.updateProgress()
-             })
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    func setProgressValue(_ newValue: Float) {
+        progressView.progress = newValue
+    }
+    func setProgressHidden(_ isHidden: Bool) {
+        progressView.isHidden = isHidden
     }
     
     @IBAction func didTapBackButton(_ sender: UIButton) {
         delegate?.webViewViewControllerDidCancel(self)
     }
     
-    private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-    }
-}
-//MARK: - Networking
-
-extension WebViewViewController {
-    //Формируем запрос Request, чтобы загрузить веб-контент
-    func loadWebView() {
-        //Инициализируем URLComponents
-        var urlComponents = URLComponents(string: unsplashAuthorizeURLString)!
-        //Устанавливаем значения, достаем url
-        urlComponents.queryItems = [
-        URLQueryItem(name: "client_id", value: accessKey),
-        URLQueryItem(name: "redirect_uri", value: redirectURI),
-        URLQueryItem(name: "response_type", value: "code"),
-        URLQueryItem(name: "scope", value: accessScope)]
-        let url = urlComponents.url!
-        
-        //Формируем URLRequest и передаем WKWebView для загрузки
-        let request = URLRequest(url: url)
+    func load(request: URLRequest) {
         webView.load(request)
-        //теперь при открытии экрана, он загружает авторизационный экран
-    }
-    
-    static func clean(){
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-            }
-        }
     }
 }
 
@@ -101,27 +77,16 @@ extension WebViewViewController: WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
-    func switchToSplashScreen() {
-        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-        let splashScreenViewController = SplashViewController()
-        window.rootViewController = splashScreenViewController
-    }
-    
-    
-    //Получаем из navigationAction - URL, Создаем URLComponents
-    //Ищем в массиве значение name == code, возвращаем value
-    //При успешной авторизации перехватываем строку "код"
-    func code(from navigationAction: WKNavigationAction) -> String? {
-        if let url = navigationAction.request.url,
-           let urlComponents = URLComponents(string: url.absoluteString),
-           urlComponents.path == "/oauth/authorize/native",
-           let items = urlComponents.queryItems,
-           let codeItem = items.first(where: {$0.name == "code"}) {
-            return codeItem.value
-        } else {
-            return nil
+
+    private func code(from navigationAction: WKNavigationAction) -> String? {
+        if let url = navigationAction.request.url {
+            return presenter?.code(from: url)
         }
+        return nil
     }
 }
+
+
+
 
 
